@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+   <arg name="imu_name"/>
+   <arg name="robot_name"/>
+   <arg name="robot_parent_link"/>
+   <arg name="port"/>
+   <arg name="data_topic"/>
+
+   <node pkg="ahrs_landmark" type="ahrs_landmark" name="driver" >
+      <param name="frame_id" value="$(arg robot_name)/$(arg imu_name)_link"/>
+      <param name="parent_frame_id" value="$(arg robot_name)/$(arg robot_parent_link)"/>
+      <param name="serial_dev" value="$(arg port)"/>
+      <param name="linear_acceleration_stddev" value="0."/>
+      <param name="angular_velocity_stddev" value="0."/>
+      <param name="orientation_stddev" value="0."/>
+      <param name="local_gravity" value="9.81"/>
+      <remap from="ahrs_landmark/imu/data" to="$(arg data_topic)"/>
+      <remap from="ahrs_landmark/imu/mag" to="mag"/>
+      <remap from="ahrs_landmark/imu/temperature" to="temperature"/>
+      <remap from="ahrs_landmark/imu/ahrs_raw_output" to="ahrs_raw_output"/>
+      <remap from="ahrs_landmark/imu/data_raw" to="data_raw"/>
+   </node>
+
+</launch>

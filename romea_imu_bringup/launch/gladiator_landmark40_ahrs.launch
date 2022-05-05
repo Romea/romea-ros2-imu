@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<launch>
+
+   <arg name="xyz"/>
+   <arg name="rpy"/>
+   <arg name="rate"/>
+   <arg name="mode"/>
+   <arg name="imu_name" default="imu"/>
+   <arg name="robot_name" default="robot"/>
+   <arg name="robot_parent_link" value="base_link"/>
+
+   <arg name="embedded" default="false"/>
+   <arg name="port" if="$(eval arg('embedded') == false)"/>
+   <arg name="baudrate" if="$(eval arg('embedded') == false)"/>
+
+   <arg name="data_topic" default="/$(arg robot_name)/$(arg imu_name)/data"/>
+
+   <group ns="$(arg imu_name)">
+
+      <include file="$(find romea_imu_bringup)/launch/common/imu_common.launch">
+         <arg name="mode" value="$(arg mode)"/>
+         <arg name="imu_name" value="$(arg imu_name)"/>
+         <arg name="robot_name" value="$(arg robot_name)"/>
+         <arg name="robot_parent_link" value="$(arg robot_parent_link)"/>
+         <arg name="xyz" value="$(arg xyz)"/>
+         <arg name="rpy" value="$(arg rpy)"/>
+         <arg name="rate" value="$(arg rate)"/>
+         <arg name="type" value="gladiator"/>
+         <arg name="model" value="landmark40_ahrs"/>
+         <arg name="data_topic" value="$(arg data_topic)"/>
+      </include>
+
+      <group if="$(eval arg('mode') == 'live' and arg('embedded') == false)">
+
+         <include file="$(find romea_imu_bringup)/launch/common/landmark_driver.launch">
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="imu_name" value="$(arg imu_name)"/>
+            <arg name="port" value="$(ar port)"/>
+            <arg name="parent_link" value="$(arg parent_link)"/>
+            <arg name="data_topic" value="$(arg data_topic)"/>
+         </include>
+
+      </group>
+
+    </group>
+
+</launch>
