@@ -2,13 +2,12 @@
 <robot name="imu" 
   xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:macro name="imu_sensor" params="xyz rpy parent_link rate type model name">
+  <xacro:macro name="imu_sensor" params="xyz rpy parent_link rate type model name prefix">
 
     <xacro:property name="conf" value="$(find romea_imu_description)/config/${type}_${model}.yaml" />
     <xacro:property name="props" value="${load_yaml(conf)}"/>
     <xacro:property name="link_name" value="${prefix}${name}_link"/>
     <xacro:property name="joint_name" value="${prefix}${name}_joint"/>
-    <xacro:property name="controller_name" value="${prefix}${name}_controller"/>
     <xacro:property name="parent_link_name" value="${prefix}${parent_link}"/>
     <xacro:property name="data_topic" value="${name}/data"/>
 
@@ -18,9 +17,6 @@
     <xacro:property name="ang_drift_std" value="${props['angular_speed_bias_stability_std']}"/>
     <xacro:property name="heading_std" value="${props['heading_std']}"/>
 
-    <gazebo reference="${link_name}">
-      <material>Gazebo/Orange</material>
-    </gazebo>
     <link name="${link_name}">
       <visual>
         <geometry>
@@ -28,6 +24,7 @@
         </geometry>
       </visual>
     </link>
+
     <joint name="${joint_name}" type="fixed">
       <axis xyz="0 0 1" />
       <origin xyz="${xyz}" rpy="${rpy}"/>
@@ -36,24 +33,60 @@
     </joint>
 
     <gazebo reference="${link_name}">
-      <gravity>true</gravity>
-      <sensor name='imu_sensor' type='imu'>
-        <always_on>1</always_on>
-        <update_rate>1000</update_rate>
-        <visualize>1</visualize>
-        <topic>__default_topic__</topic>
-        <plugin name="${controller_name}" filename="libgazebo_ros_romea_imu.so">
-          <update_rate>${rate}</update_rate>
-          <body_name>${parent_link}</body_name>
-          <topic_name>${name}/data</topic_name>
-          <link_name>${link_name}</link_name>
-          <accel_std>${acc_noise_std}</accel_std>
-          <rate_std>${ang_noise_std}</rate_std>
-          <angle_std>${heading_std}</angle_std>
-          <imu_name>${prefix}${name}</imu_name>
-        </plugin>
-        <pose>0 0 0 0 0 0</pose>
-      </sensor>
+        <material>Gazebo/Orange</material>
+        <sensor name="${name}" type="imu">
+            <always_on>true</always_on>
+            <update_rate>100</update_rate>
+            <imu>
+              <angular_velocity>
+                <x>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>${ang_noise_std}</stddev>
+                  </noise>
+                </x>
+                <y>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>${ang_noise_std}</stddev>
+                  </noise>
+                </y>
+                <z>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>${ang_noise_std}</stddev>
+                  </noise>
+                </z>
+              </angular_velocity>
+              <linear_acceleration>
+                <x>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>${acc_noise_std}</stddev>
+                  </noise>
+                </x>
+                <y>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>${acc_noise_std}</stddev>
+                  </noise>
+                </y>
+                <z>
+                  <noise type="gaussian">
+                    <mean>0.0</mean>
+                    <stddev>${acc_noise_std}</stddev>
+                  </noise>
+                </z>
+              </linear_acceleration>
+            </imu>
+            <plugin name="${name}" filename="libgazebo_ros_imu_sensor.so">
+                <ros>
+                    <namespace>${prefix}${name}</namespace>
+                    <remapping>~/out:=${name}/data</remapping>
+                </ros>
+                <initial_orientation_as_reference>false</initial_orientation_as_reference>
+            </plugin>
+        </sensor>
     </gazebo>
 
   </xacro:macro>
