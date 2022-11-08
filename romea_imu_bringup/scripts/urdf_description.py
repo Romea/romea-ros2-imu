@@ -16,6 +16,6 @@ if __name__ == "__main__":
   else:
     prefix=parameters["robot_namespace"]+"_";
 
-  configuration_yaml_file=parameters["description_yaml_file"]
+  description_yaml_file=parameters["description_yaml_file"]
 
   print(imu_bringup.urdf_description(prefix,description_yaml_file))

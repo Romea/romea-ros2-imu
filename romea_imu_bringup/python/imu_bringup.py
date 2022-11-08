@@ -15,7 +15,7 @@ def urdf_description(prefix,description_yaml_file):
        device["configuration"]["type"],
        device["configuration"]["model"],
        device["configuration"]["rate"],
-       device["configuration"]["parent_link"],
-       device["configuration"]["xyz"],
-       device["configuration"]["rpy"],
+       device["geometry"]["parent_link"],
+       device["geometry"]["xyz"],
+       device["geometry"]["rpy"],
    )
