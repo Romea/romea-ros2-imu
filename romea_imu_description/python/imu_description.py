@@ -8,12 +8,6 @@ def urdf(prefix,name,type, model, rate, parent_link, xyz,rpy):
 
     xacro_file =  get_package_share_directory("romea_imu_description")+ "/urdf/"+type+"_"+model+".xacro.urdf"
 
-    print(xyz[0])
-    print(rpy[1])
-    print(' '.join(map(str, xyz)))
-    print("prefix", prefix)
-    print("name", name)
-
     urdf_xml = xacro.process_file(
         xacro_file,
         mappings={
@@ -23,6 +17,7 @@ def urdf(prefix,name,type, model, rate, parent_link, xyz,rpy):
             "parent_link": parent_link,
             "xyz": ' '.join(map(str, xyz)),
             "rpy": ' '.join(map(str, rpy)),
+            "mesh_visual": str(False),
         },
     )
 

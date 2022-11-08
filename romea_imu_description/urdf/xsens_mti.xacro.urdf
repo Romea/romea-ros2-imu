@@ -7,8 +7,17 @@
   <xacro:arg name="parent_link" default="base_link"/>
   <xacro:arg name="xyz" default="0.0 0.0 0.0"/>
   <xacro:arg name="rpy" default="0.0 0.0 0.0"/>
+  <xacro:arg name="mesh_visual" default="false"/>
 
   <xacro:include filename="$(find romea_imu_description)/urdf/imu.xacro" />
-  <xacro:imu_sensor prefix="$(arg prefix)" name="$(arg name)" xyz="$(arg xyz) " rpy="$(arg rpy)" parent_link="$(arg parent_link)" rate="100" type="xsens" model="mti"/>
+  <xacro:imu_sensor prefix="$(arg prefix)"
+                    name="$(arg name)"
+                    type="xsens"
+                    model="mti"
+                    rate="100"
+                    xyz="$(arg xyz)"
+                    rpy="$(arg rpy)"
+                    parent_link="$(arg parent_link)"
+                    mesh_visual="$(arg mesh_visual)"/>
 
 </robot>
