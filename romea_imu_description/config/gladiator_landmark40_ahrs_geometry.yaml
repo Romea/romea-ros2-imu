@@ -1,11 +1,12 @@
-mass : 1.1
+mass : 0.113
 aabb :
-    length: 0.152
-    width: 0.102
-    height: 0.105
+    length: 0.45
+    width: 0.50
+    height: 0.317
     center: [0.0, 0.0, 0.0]
-mesh:
-    xyz: [0.0, 0.0, 0.0]
-    rpy: [0.0, 0.0, 0.0]
-    filename: "package://bluespace_ai_xsens_mti_driver/urdf/MTI_1.stl"
-    scale:
+# mesh:
+#     xyz: [0.0, 0.0, 0.0]
+#     rpy: [0.0, 0.0, 0.0]
+#     scale: [0.0, 0.0, 0.0]
+#     filename: "package://bluespace_ai_xsens_mti_driver/urdf/MTI_1.stl"
+#     scale:
