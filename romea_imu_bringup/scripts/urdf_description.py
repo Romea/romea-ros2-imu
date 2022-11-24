@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import imu_bringup
+import romea_imu_bringup
 import sys
 
 if __name__ == "__main__":
@@ -18,4 +18,4 @@ if __name__ == "__main__":
 
   description_yaml_file=parameters["description_yaml_file"]
 
-  print(imu_bringup.urdf_description(prefix,description_yaml_file))
+  print(romea_imu_bringup.urdf_description(prefix,description_yaml_file))
