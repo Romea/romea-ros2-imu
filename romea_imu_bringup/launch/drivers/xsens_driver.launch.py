@@ -20,6 +20,7 @@ def launch_setup(context, *args, **kwargs):
 
     driver = LaunchDescription()
 
+    print("xsens_driver")
     driver_node = Node(
             package='xsens_driver',
             executable='mtnode.py',

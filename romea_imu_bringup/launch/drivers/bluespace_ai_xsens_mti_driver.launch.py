@@ -20,6 +20,7 @@ def launch_setup(context, *args, **kwargs):
 
     driver = LaunchDescription()
 
+    print("bluespace")
     # Set env var to print messages to stdout immediately
     arg = SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1')
     driver.add_action(arg)

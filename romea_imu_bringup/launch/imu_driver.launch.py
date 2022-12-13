@@ -12,27 +12,42 @@ from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
+from romea_imu_bringup import (
+    get_imu_name,
+    has_imu_driver_configuration,
+    get_imu_driver_pkg,
+    get_imu_device,
+    get_imu_baudrate,
+)
+
 import yaml
+
+def get_robot_namespace(context):
+    return LaunchConfiguration("robot_namespace").perform(context)
+
+def get_meta_description(context):
+    
+    meta_description_filename = LaunchConfiguration("meta_description_filename").perform(
+        context
+    )
+
+    with open(meta_description_filename) as f:
+        return yaml.safe_load(f)
 
 
 def launch_setup(context, *args, **kwargs):
 
-    description_yaml_file = LaunchConfiguration("description_yaml_file").perform(
-        context
-    )
+    robot_namespace = get_robot_namespace(context)
+    meta_description = get_meta_description(context)
 
-    robot_namespace = LaunchConfiguration("robot_namespace").perform(context)
-
-    with open(description_yaml_file) as f:
-        device = yaml.safe_load(f)
-
-    if "driver" not in device:
+    if not has_imu_driver_configuration(meta_description):
        return []
 
+    imu_name = get_imu_name(meta_description)
     if robot_namespace != '':
-        frame_id = robot_namespace + "_" + device["name"]+"_link"
+        frame_id = robot_namespace + "_" + imu_name+"_link"
     else:
-        frame_id = device["name"]+"_link"
+        frame_id = imu_name + "_link"
 
     driver = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -41,14 +56,14 @@ def launch_setup(context, *args, **kwargs):
                     [
                         FindPackageShare("romea_imu_bringup"),
                         "launch",
-                        "drivers/"+device["driver"]["pkg"] + ".launch.py",
+                        "drivers/"+get_imu_driver_pkg(meta_description) + ".launch.py",
                     ]
                 )
             ]
         ),
         launch_arguments={
-            "device": device["driver"]["device"],
-            "baudrate": str(device["driver"]["baudrate"]),
+            "device": get_imu_device(meta_description),
+            "baudrate": str(get_imu_baudrate(meta_description)),
             "frame_id": frame_id,
         }.items(),
     )
@@ -57,7 +72,7 @@ def launch_setup(context, *args, **kwargs):
         GroupAction(
             actions=[
                 PushRosNamespace(robot_namespace),
-                PushRosNamespace(device["name"]),
+                PushRosNamespace(imu_name),
                 driver,
             ]
         )
@@ -67,7 +82,7 @@ def launch_setup(context, *args, **kwargs):
 def generate_launch_description():
 
     declared_arguments = []
-    declared_arguments.append(DeclareLaunchArgument("description_yaml_file"))
+    declared_arguments.append(DeclareLaunchArgument("meta_description_filename"))
     declared_arguments.append(DeclareLaunchArgument("robot_namespace",default_value=""))
 
     return LaunchDescription(
