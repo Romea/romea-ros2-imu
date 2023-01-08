@@ -4,7 +4,7 @@
 
 import pytest
 import xml.etree.ElementTree as ET
-from romea_gps_description import urdf
+from romea_imu_description import urdf
 
 
 @pytest.fixture(scope="module")
