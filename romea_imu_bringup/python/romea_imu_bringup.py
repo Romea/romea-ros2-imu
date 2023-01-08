@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
+# Copyright 2022 INRAE, French National Research Institute for Agriculture, Food and Environment
+# Add license
 
-from ament_index_python.packages import get_package_share_directory
 from romea_common_bringup import MetaDescription
 import romea_imu_description
-import yaml
 
 
 class IMUMetaDescription:
@@ -32,7 +31,7 @@ class IMUMetaDescription:
         return self.meta_description.get("model", "configuration")
 
     def get_rate(self):
-        return self.meta_description.get("rate","configuration")
+        return self.meta_description.get("rate", "configuration")
 
     def get_parent_link(self):
         return self.meta_description.get("parent_link", "geometry")
@@ -43,17 +42,18 @@ class IMUMetaDescription:
     def get_rpy(self):
         return self.meta_description.get("rpy", "geometry")
 
-def urdf_description(prefix,meta_description_filename):
 
-   meta_description = IMUMetaDescription(meta_description_filename)
+def urdf_description(prefix, meta_description_filename):
 
-   return romea_imu_description.urdf(
-       prefix,
-       meta_description.get_name(),
-       meta_description.get_type(),
-       meta_description.get_model(),
-       meta_description.get_rate(),
-       meta_description.get_parent_link(),
-       meta_description.get_xyz(),
-       meta_description.get_rpy(),
-   )
+    meta_description = IMUMetaDescription(meta_description_filename)
+
+    return romea_imu_description.urdf(
+        prefix,
+        meta_description.get_name(),
+        meta_description.get_type(),
+        meta_description.get_model(),
+        meta_description.get_rate(),
+        meta_description.get_parent_link(),
+        meta_description.get_xyz(),
+        meta_description.get_rpy(),
+    )

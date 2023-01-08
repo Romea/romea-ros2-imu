@@ -1,16 +1,11 @@
+# Copyright 2022 INRAE, French National Research Institute for Agriculture, Food and Environment
+# Add license
+
 from launch import LaunchDescription
-
-from launch.actions import (
-    IncludeLaunchDescription,
-    DeclareLaunchArgument,
-    OpaqueFunction,
-    SetEnvironmentVariable,
-)
-
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetEnvironmentVariable
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
-from launch_ros.substitutions import FindPackageShare
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+
 
 def launch_setup(context, *args, **kwargs):
 
@@ -22,41 +17,42 @@ def launch_setup(context, *args, **kwargs):
 
     print("bluespace")
     # Set env var to print messages to stdout immediately
-    arg = SetEnvironmentVariable('RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED', '1')
+    arg = SetEnvironmentVariable("RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED", "1")
     driver.add_action(arg)
 
     driver_node = Node(
-            package='bluespace_ai_xsens_mti_driver',
-            executable='xsens_mti_node',
-            name='driver',
-            output='screen',
-            parameters=[
-                {"scan_for_devices": False},
-                {"port": port},
-                {"baudrate": int(baudrate)},
-                {"frame_id": frame_id},
-                {"pub_imu": True},
-                {"pub_quaternion": False},
-                {"pub_mag": False},
-                {"pub_angular_velocity": False},
-                {"pub_acceleration": False},
-                {"pub_free_acceleration": False},
-                {"pub_dq": False},
-                {"pub_dv": False},
-                {"pub_sampletime": False},
-                {"pub_temperature": False},
-                {"pub_pressure": False},
-                {"pub_gnss": False},
-                {"pub_twist": False},
-                {"pub_transform": False},
-                {"pub_positionLLA": False},
-                {"pub_velocity": False},
-            ],
-            arguments=[]
+        package="bluespace_ai_xsens_mti_driver",
+        executable="xsens_mti_node",
+        name="driver",
+        output="screen",
+        parameters=[
+            {"scan_for_devices": False},
+            {"port": port},
+            {"baudrate": int(baudrate)},
+            {"frame_id": frame_id},
+            {"pub_imu": True},
+            {"pub_quaternion": False},
+            {"pub_mag": False},
+            {"pub_angular_velocity": False},
+            {"pub_acceleration": False},
+            {"pub_free_acceleration": False},
+            {"pub_dq": False},
+            {"pub_dv": False},
+            {"pub_sampletime": False},
+            {"pub_temperature": False},
+            {"pub_pressure": False},
+            {"pub_gnss": False},
+            {"pub_twist": False},
+            {"pub_transform": False},
+            {"pub_positionLLA": False},
+            {"pub_velocity": False},
+        ],
+        arguments=[],
     )
     driver.add_action(driver_node)
 
     return [driver]
+
 
 def generate_launch_description():
 

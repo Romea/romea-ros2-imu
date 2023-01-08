@@ -1,3 +1,6 @@
+# Copyright 2022 INRAE, French National Research Institute for Agriculture, Food and Environment
+# Add license
+
 from launch import LaunchDescription
 
 from launch.actions import (
@@ -17,14 +20,16 @@ from romea_imu_bringup import IMUMetaDescription
 
 import yaml
 
+
 def get_robot_namespace(context):
     return LaunchConfiguration("robot_namespace").perform(context)
 
+
 def get_meta_description(context):
-    
-    meta_description_filename = LaunchConfiguration("meta_description_filename").perform(
-        context
-    )
+
+    meta_description_filename = LaunchConfiguration(
+        "meta_description_filename"
+    ).perform(context)
 
     with open(meta_description_filename) as f:
         return IMUMetaDescription(yaml.safe_load(f))
@@ -36,7 +41,7 @@ def launch_setup(context, *args, **kwargs):
     meta_description = get_meta_description(context)
 
     if not meta_description.has_driver_configuration():
-       return []
+        return []
 
     imu_name = meta_description.get_name()
 
@@ -47,7 +52,7 @@ def launch_setup(context, *args, **kwargs):
                     [
                         FindPackageShare("romea_imu_bringup"),
                         "launch",
-                        "drivers/"+meta_description.get_driver_pkg() + ".launch.py",
+                        "drivers/" + meta_description.get_driver_pkg() + ".launch.py",
                     ]
                 )
             ]
@@ -55,7 +60,7 @@ def launch_setup(context, *args, **kwargs):
         launch_arguments={
             "device": meta_description.get_device(),
             "baudrate": str(meta_description.get_baudrate()),
-            "frame_id": device_link_name(robot_namespace,imu_name),
+            "frame_id": device_link_name(robot_namespace, imu_name),
         }.items(),
     )
 
@@ -74,7 +79,9 @@ def generate_launch_description():
 
     declared_arguments = []
     declared_arguments.append(DeclareLaunchArgument("meta_description_filename"))
-    declared_arguments.append(DeclareLaunchArgument("robot_namespace",default_value=""))
+    declared_arguments.append(
+        DeclareLaunchArgument("robot_namespace", default_value="")
+    )
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]
