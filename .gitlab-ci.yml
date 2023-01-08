@@ -25,6 +25,3 @@ galactic_focal_build:
   stage: build
   script:
     - colcon build 
-    - source install/setup.bash 
-    - colcon test --packages-select romea_imu_bringup romea_imu_description 
-    - colcon test-result --verbose

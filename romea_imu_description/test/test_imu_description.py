@@ -21,7 +21,7 @@ def urdf_xml():
 
 
 def test_imu_name(urdf_xml):
-    assert urdf_xml.find("link").get("name") == "robot_gps_link"
+    assert urdf_xml.find("link").get("name") == "robot_imu_link"
 
 
 def test_imu_position(urdf_xml):
@@ -29,7 +29,7 @@ def test_imu_position(urdf_xml):
 
 
 def test_imu_orientation(urdf_xml):
-    assert urdf_xml.find("joint/origin").get("xyz") == "4.0 5.0 6.0"
+    assert urdf_xml.find("joint/origin").get("rpy") == "4.0 5.0 6.0"
 
 
 def test_imu_parent_link(urdf_xml):
@@ -37,4 +37,4 @@ def test_imu_parent_link(urdf_xml):
 
 
 def test_imu_rate(urdf_xml):
-    assert urdf_xml.find("gazebo/sensor/update_rate").text == "10"
+    assert urdf_xml.find("gazebo/sensor/update_rate").text == "100"
