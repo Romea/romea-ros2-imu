@@ -1,6 +1,7 @@
 # Copyright 2022 INRAE, French National Research Institute for Agriculture, Food and Environment
 # Add license
 
+from numpy import radians
 from romea_common_bringup import MetaDescription
 import romea_imu_description
 
@@ -39,8 +40,11 @@ class IMUMetaDescription:
     def get_xyz(self):
         return self.meta_description.get("xyz", "geometry")
 
-    def get_rpy(self):
+    def get_rpy_deg(self):
         return self.meta_description.get("rpy", "geometry")
+
+    def get_rpy_rad(self):
+        return radians(self.get_rpy_deg()).tolist()
 
 
 def urdf_description(prefix, meta_description_filename):
@@ -55,5 +59,5 @@ def urdf_description(prefix, meta_description_filename):
         meta_description.get_rate(),
         meta_description.get_parent_link(),
         meta_description.get_xyz(),
-        meta_description.get_rpy(),
+        meta_description.get_rpy_rad(),
     )

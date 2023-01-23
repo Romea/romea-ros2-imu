@@ -3,7 +3,7 @@
 
 import os
 import pytest
-
+from numpy import radians
 from romea_imu_bringup import IMUMetaDescription
 
 
@@ -53,5 +53,9 @@ def test_get_xyz(meta_description):
     assert meta_description.get_xyz() == [1.0, 2.0, 3.0]
 
 
-def test_get_rpy(meta_description):
-    assert meta_description.get_rpy() == [4.0, 5.0, 6.0]
+def test_get_rpy_deg(meta_description):
+    assert meta_description.get_rpy_deg() == [4.0, 5.0, 6.0]
+
+
+def test_get_rpy_rad(meta_description):
+    assert meta_description.get_rpy_rad() == radians([4.0, 5.0, 6.0]).tolist()

@@ -38,7 +38,10 @@ def test_imu_position(urdf):
 
 
 def test_imu_orientation(urdf):
-    assert urdf.find("joint/origin").get("rpy") == "4.0 5.0 6.0"
+    assert (
+        urdf.find("joint/origin").get("rpy")
+        == "0.06981317007977318 0.08726646259971647 0.10471975511965978"
+    )
 
 
 def test_imu_parent_link(urdf):
