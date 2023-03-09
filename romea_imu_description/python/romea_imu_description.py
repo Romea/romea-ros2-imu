@@ -6,7 +6,7 @@ import xacro
 from ament_index_python.packages import get_package_share_directory
 
 
-def urdf(prefix, name, type, model, rate, parent_link, xyz, rpy):
+def urdf(prefix, name, type, model, rate, parent_link, xyz, rpy, ros_namespace):
 
     xacro_file = (
         get_package_share_directory("romea_imu_description")
@@ -27,6 +27,7 @@ def urdf(prefix, name, type, model, rate, parent_link, xyz, rpy):
             "xyz": " ".join(map(str, xyz)),
             "rpy": " ".join(map(str, rpy)),
             "mesh_visual": str(False),
+            "ros_namespace": ros_namespace
         },
     )
 

@@ -17,7 +17,12 @@ def urdf_xml():
     parent_link = "base_link"
     xyz = [1.0, 2.0, 3.0]
     rpy = [4.0, 5.0, 6.0]
-    return ET.fromstring(urdf(prefix, name, type, model, rate, parent_link, xyz, rpy))
+    ros_namespace = "ns"
+
+    return ET.fromstring(urdf(prefix, name,
+                              type, model, rate,
+                              parent_link, xyz, rpy,
+                              ros_namespace))
 
 
 def test_imu_name(urdf_xml):
@@ -38,3 +43,7 @@ def test_imu_parent_link(urdf_xml):
 
 def test_imu_rate(urdf_xml):
     assert urdf_xml.find("gazebo/sensor/update_rate").text == "100"
+
+
+def test_plugin_namespace(urdf_xml):
+    assert urdf_xml.find("gazebo/sensor/plugin/ros/namespace").text == "ns"

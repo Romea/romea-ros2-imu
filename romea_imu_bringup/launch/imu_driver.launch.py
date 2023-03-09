@@ -44,6 +44,7 @@ def launch_setup(context, *args, **kwargs):
         return []
 
     imu_name = meta_description.get_name()
+    imu_namespace = str(meta_description.get_namespace() or "")
 
     driver = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -68,6 +69,7 @@ def launch_setup(context, *args, **kwargs):
         GroupAction(
             actions=[
                 PushRosNamespace(robot_namespace),
+                PushRosNamespace(imu_namespace),
                 PushRosNamespace(imu_name),
                 driver,
             ]
