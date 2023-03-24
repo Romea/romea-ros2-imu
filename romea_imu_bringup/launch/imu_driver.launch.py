@@ -27,11 +27,11 @@ def get_robot_namespace(context):
 
 def get_meta_description(context):
 
-    meta_description_filename = LaunchConfiguration(
-        "meta_description_filename"
+    meta_description_file_path = LaunchConfiguration(
+        "meta_description_file_path"
     ).perform(context)
 
-    with open(meta_description_filename) as f:
+    with open(meta_description_file_path) as f:
         return IMUMetaDescription(yaml.safe_load(f))
 
 
@@ -80,7 +80,7 @@ def launch_setup(context, *args, **kwargs):
 def generate_launch_description():
 
     declared_arguments = []
-    declared_arguments.append(DeclareLaunchArgument("meta_description_filename"))
+    declared_arguments.append(DeclareLaunchArgument("meta_description_file_path"))
     declared_arguments.append(
         DeclareLaunchArgument("robot_namespace", default_value="")
     )

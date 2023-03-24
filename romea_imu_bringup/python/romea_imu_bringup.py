@@ -7,8 +7,8 @@ import romea_imu_description
 
 
 class IMUMetaDescription:
-    def __init__(self, meta_description_filename):
-        self.meta_description = MetaDescription("imu", meta_description_filename)
+    def __init__(self, meta_description_file_path):
+        self.meta_description = MetaDescription("imu", meta_description_file_path)
 
     def get_name(self):
         return self.meta_description.get("name")
@@ -50,9 +50,9 @@ class IMUMetaDescription:
         return radians(self.get_rpy_deg()).tolist()
 
 
-def urdf_description(robot_namespace, meta_description_filename):
+def urdf_description(robot_namespace, meta_description_file_path):
 
-    meta_description = IMUMetaDescription(meta_description_filename)
+    meta_description = IMUMetaDescription(meta_description_file_path)
 
     ros_namespace = device_namespace(
         robot_namespace,
