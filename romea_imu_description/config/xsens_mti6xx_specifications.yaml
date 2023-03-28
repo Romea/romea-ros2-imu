@@ -1,0 +1,10 @@
+acceleration_noise_density: 588.6e-06 # m/s^2/√Hz
+acceleration_bias_stability_std: 98.1e-06 # m/s^2
+acceleration_range: 98.1 # m/s^2
+angular_speed_noise_density: 1.222e-04 # rad/s/√Hz
+angular_speed_bias_stability_std: 2.2222e-03 #deg/s
+angular_speed_range: 34.9 # rad/s
+magnetic_noise_density: 1.e-07 #T/√Hz
+magnetic_bias_stability_std: 0. # T
+magnetic_range: 0.0008 # T
+heading_std: 0.01745 # rad
