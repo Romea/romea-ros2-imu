@@ -47,18 +47,18 @@ name: "imu"  #name of the imu
 driver: # ros2 driver configuration
   pkg: "xsens_driver" # ros2 driver package choiced by user and its parameters 
   #  pkg: "bluespace_ai_xsens_mti_driver"
-  device: "/dev/ttyUSB0"
-  baudrate: 115200
-configuration:
-  type: xsens
-  model: mti
-  rate: 100
+  device: "/dev/ttyUSB0" # serial device
+  baudrate: 115200 # baudrate
+configuration: # imu configuration
+  type: xsens # type
+  model: mti # model
+  rate: 100 # hz
 geometry: # geometry configuration 
   parent_link: "base_link" # name of the the parent where the IMU is attached
   xyz: [0.0, 0.0, 1.0] # it's position in meters
   rpy: [0.0, 0.0, 0.0] # it's orientation in degrees
 records: #record configuration
-  data: true # 
+  data: true # data topic will be recorded into ros bag
 ```
 
 # 4) Supported IMU models
@@ -93,6 +93,6 @@ Supported drivers are [bluespace_ai_xsens_mti_driver](https://github.com/bluespa
     baudrate: 115200 # serial baudrate
 ```
 
-For each driver a python launch file with the name of the ROS2 package is provided in launch directory. When the meta-description is read by the main launch file called imu_driver.launch.py the corresponding driver is automatically launched taking into account parameters define by user. Thanks to remapping defined inside each driver launch files, the data provided by drivers are always the same and are called:
+For each driver a python launch file with the name of the ROS2 package is provided in launch directory. When the meta-description is read by the main launch file called imu_driver.launch.py the corresponding driver is automatically launched taking into account parameters define by user. Thanks to remapping defined inside each driver launch files, the data provided by drivers are always published in the same topic called:
 
 - data(sensors_msgs/IMU)
