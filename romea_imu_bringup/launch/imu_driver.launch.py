@@ -18,8 +18,6 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from romea_common_bringup import device_link_name
 from romea_imu_bringup import IMUMetaDescription
 
-import yaml
-
 
 def get_robot_namespace(context):
     return LaunchConfiguration("robot_namespace").perform(context)
@@ -31,8 +29,9 @@ def get_meta_description(context):
         "meta_description_file_path"
     ).perform(context)
 
+    print(meta_description_file_path)
     with open(meta_description_file_path) as f:
-        return IMUMetaDescription(yaml.safe_load(f))
+        return IMUMetaDescription(meta_description_file_path)
 
 
 def launch_setup(context, *args, **kwargs):
@@ -59,8 +58,8 @@ def launch_setup(context, *args, **kwargs):
             ]
         ),
         launch_arguments={
-            "device": meta_description.get_device(),
-            "baudrate": str(meta_description.get_baudrate()),
+            "device": meta_description.get_driver_device(),
+            "baudrate": str(meta_description.get_driver_baudrate()),
             "frame_id": device_link_name(robot_namespace, imu_name),
         }.items(),
     )
