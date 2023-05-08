@@ -41,9 +41,7 @@ def get_meta_description(context):
         "meta_description_file_path"
     ).perform(context)
 
-    print(meta_description_file_path)
-    with open(meta_description_file_path) as f:
-        return IMUMetaDescription(meta_description_file_path)
+    return IMUMetaDescription(meta_description_file_path)
 
 
 def launch_setup(context, *args, **kwargs):
