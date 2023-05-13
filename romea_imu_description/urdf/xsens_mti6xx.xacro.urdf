@@ -2,6 +2,7 @@
 <robot name="imu" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="prefix" default="" />
+  <xacro:arg name="mode" default="simulation_gazebo" />
   <xacro:arg name="name" default="imu" />
   <xacro:arg name="rate" default="100" />
   <xacro:arg name="parent_link" default="base_link" />
@@ -13,6 +14,7 @@
   <xacro:include filename="$(find romea_imu_description)/urdf/imu.xacro" />
   <xacro:imu_sensor
     prefix="$(arg prefix)"
+    mode="$(arg mode)"
     name="$(arg name)"
     type="xsens"
     model="mti6xx"

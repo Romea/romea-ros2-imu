@@ -21,6 +21,7 @@ from romea_imu_description import urdf
 @pytest.fixture(scope="module")
 def urdf_xml():
     prefix = "robot_"
+    mode = "simulation"
     name = "imu"
     type = "xsens"
     model = "mti"
@@ -30,7 +31,7 @@ def urdf_xml():
     rpy = [4.0, 5.0, 6.0]
     ros_namespace = "ns"
 
-    return ET.fromstring(urdf(prefix, name,
+    return ET.fromstring(urdf(prefix, mode, name,
                               type, model, rate,
                               parent_link, xyz, rpy,
                               ros_namespace))

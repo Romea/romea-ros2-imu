@@ -62,7 +62,7 @@ class IMUMetaDescription:
         return radians(self.get_rpy_deg()).tolist()
 
 
-def urdf_description(robot_namespace, meta_description_file_path):
+def urdf_description(robot_namespace, mode, meta_description_file_path):
 
     meta_description = IMUMetaDescription(meta_description_file_path)
 
@@ -74,6 +74,7 @@ def urdf_description(robot_namespace, meta_description_file_path):
 
     return romea_imu_description.urdf(
         robot_urdf_prefix(robot_namespace),
+        mode,
         meta_description.get_name(),
         meta_description.get_type(),
         meta_description.get_model(),
