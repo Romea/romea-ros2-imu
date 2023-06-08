@@ -3,17 +3,7 @@
   xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="imu_sensor"
-    params="prefix mode name xyz rpy parent_link rate type model mesh_visual ros_namespace">
-
-    <xacro:property name="specifications_file"
-      value="$(find romea_imu_description)/config/${type}_${model}_specifications.yaml" />
-    <xacro:property name="geometry_file"
-      value="$(find romea_imu_description)/config/${type}_${model}_geometry.yaml" />
-
-    <xacro:property name="specifications"
-      value="${load_yaml(specifications_file)}" />
-    <xacro:property name="geometry"
-      value="${load_yaml(geometry_file)}" />
+    params="prefix mode name xyz rpy parent_link rate specifications geometry mesh_visual ros_namespace">
 
     <xacro:property name="link_name"
       value="${prefix}${name}_link" />

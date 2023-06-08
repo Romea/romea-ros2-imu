@@ -5,19 +5,31 @@
   <xacro:arg name="mode" default="simulation_gazebo" />
   <xacro:arg name="name" default="imu" />
   <xacro:arg name="rate" default="100" />
+  <xacro:arg name="specifications_yaml_file" default="" />
+  <xacro:arg name="geometry_yaml_file" default="" />
   <xacro:arg name="parent_link" default="base_link" />
   <xacro:arg name="xyz" default="0.0 0.0 0.0" />
   <xacro:arg name="rpy" default="0.0 0.0 0.0" />
   <xacro:arg name="mesh_visual" default="false" />
   <xacro:arg name="ros_namespace" default="/" />
 
+  <xacro:property name="specifications_yaml_file"
+    value="$(arg specifications_yaml_file)" />
+  <xacro:property name="geometry_yaml_file"
+    value="$(arg geometry_yaml_file)" />
+
+  <xacro:property name="specifications"
+    value="${load_yaml(specifications_yaml_file)}" />
+  <xacro:property name="geometry"
+    value="${load_yaml(geometry_yaml_file)}" />
+
   <xacro:include filename="$(find romea_imu_description)/urdf/imu.xacro" />
   <xacro:imu_sensor
     prefix="$(arg prefix)"
     mode="$(arg mode)"
     name="$(arg name)"
-    type="xsens"
-    model="mti6xx"
+    specifications="${specifications}"
+    geometry="${geometry}"
     rate="100"
     xyz="$(arg xyz)"
     rpy="$(arg rpy)"

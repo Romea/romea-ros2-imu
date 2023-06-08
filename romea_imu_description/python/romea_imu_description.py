@@ -20,13 +20,24 @@ from ament_index_python.packages import get_package_share_directory
 
 def urdf(prefix, mode, name, type, model, rate, parent_link, xyz, rpy, ros_namespace):
 
-    xacro_file = (
+    xacro_file = get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
+
+    specifications_yaml_file = (
         get_package_share_directory("romea_imu_description")
-        + "/urdf/"
+        + "/config/"
         + type
         + "_"
         + model
-        + ".xacro.urdf"
+        + "_specifications.yaml"
+    )
+
+    geometry_yaml_file = (
+        get_package_share_directory("romea_imu_description")
+        + "/config/"
+        + type
+        + "_"
+        + model
+        + "_geometry.yaml"
     )
 
     urdf_xml = xacro.process_file(
@@ -36,6 +47,8 @@ def urdf(prefix, mode, name, type, model, rate, parent_link, xyz, rpy, ros_names
             "mode": mode,
             "name": name,
             "rate": str(rate),
+            "specifications_yaml_file": specifications_yaml_file,
+            "geometry_yaml_file": geometry_yaml_file,
             "parent_link": parent_link,
             "xyz": " ".join(map(str, xyz)),
             "rpy": " ".join(map(str, rpy)),
