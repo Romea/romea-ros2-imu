@@ -14,15 +14,13 @@
 
 
 import xacro
+import yaml
 
 from ament_index_python.packages import get_package_share_directory
 
 
-def urdf(prefix, mode, name, type, model, rate, parent_link, xyz, rpy, ros_namespace):
-
-    xacro_file = get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
-
-    specifications_yaml_file = (
+def get_imu_specifications_file_path(type, model):
+    return (
         get_package_share_directory("romea_imu_description")
         + "/config/"
         + type
@@ -31,13 +29,34 @@ def urdf(prefix, mode, name, type, model, rate, parent_link, xyz, rpy, ros_names
         + "_specifications.yaml"
     )
 
-    geometry_yaml_file = (
+
+def get_imu_specifications(type, model):
+
+    with open(get_imu_specifications_file_path(type, model)) as f:
+        return yaml.safe_load(f)
+
+
+def get_imu_geometry_file_path(type, model):
+    return (
         get_package_share_directory("romea_imu_description")
         + "/config/"
         + type
         + "_"
         + model
         + "_geometry.yaml"
+    )
+
+
+def get_imu_geometry(type, model):
+
+    with open(get_imu_geometry_file_path(type, model)) as f:
+        return yaml.safe_load(f)
+
+
+def urdf(prefix, mode, name, type, model, rate, parent_link, xyz, rpy, ros_namespace):
+
+    xacro_file = (
+        get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
     )
 
     urdf_xml = xacro.process_file(
@@ -47,13 +66,13 @@ def urdf(prefix, mode, name, type, model, rate, parent_link, xyz, rpy, ros_names
             "mode": mode,
             "name": name,
             "rate": str(rate),
-            "specifications_yaml_file": specifications_yaml_file,
-            "geometry_yaml_file": geometry_yaml_file,
+            "specifications_yaml_file": get_imu_specifications_file_path(type, model),
+            "geometry_yaml_file": get_imu_geometry_file_path(type, model),
             "parent_link": parent_link,
             "xyz": " ".join(map(str, xyz)),
             "rpy": " ".join(map(str, rpy)),
             "mesh_visual": str(False),
-            "ros_namespace": ros_namespace
+            "ros_namespace": ros_namespace,
         },
     )
 

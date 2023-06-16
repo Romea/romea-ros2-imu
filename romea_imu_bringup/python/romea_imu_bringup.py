@@ -62,14 +62,24 @@ class IMUMetaDescription:
         return radians(self.get_rpy_deg()).tolist()
 
 
+def get_imu_specifications(meta_description):
+    return romea_imu_description.get_imu_specifications(
+        meta_description.get_type(), meta_description.get_model()
+    )
+
+
+def get_imu_geometry(meta_description):
+    return romea_imu_description.get_imu_geometry(
+        meta_description.get_type(), meta_description.get_model()
+    )
+
+
 def urdf_description(robot_namespace, mode, meta_description_file_path):
 
     meta_description = IMUMetaDescription(meta_description_file_path)
 
     ros_namespace = device_namespace(
-        robot_namespace,
-        meta_description.get_namespace(),
-        meta_description.get_name()
+        robot_namespace, meta_description.get_namespace(), meta_description.get_name()
     )
 
     return romea_imu_description.urdf(
