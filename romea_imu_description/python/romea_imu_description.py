@@ -55,12 +55,10 @@ def get_imu_geometry(type, model):
 
 def urdf(prefix, mode, name, type, model, rate, parent_link, xyz, rpy, ros_namespace):
 
-    xacro_file = (
-        get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
-    )
+    xacro_file = get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
 
     if mode == "simulation":
-        mode += "_gazebo_classic" 
+        mode += "_gazebo_classic"
 
     urdf_xml = xacro.process_file(
         xacro_file,
