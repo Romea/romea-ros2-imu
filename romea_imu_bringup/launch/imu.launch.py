@@ -35,18 +35,17 @@ def get_mode(context):
     mode = LaunchConfiguration("mode").perform(context)
     if mode == "simulation":
         return "simulation_gazebo_classic"
-    else :
+    else:
         return mode
-    
+
 
 def get_robot_namespace(context):
     return LaunchConfiguration("robot_namespace").perform(context)
 
+
 def get_meta_description(context):
 
-    meta_description_file_path = LaunchConfiguration(
-        "meta_description_file_path"
-    ).perform(context)
+    meta_description_file_path = LaunchConfiguration("meta_description_file_path").perform(context)
 
     return IMUMetaDescription(meta_description_file_path)
 
@@ -63,7 +62,7 @@ def launch_setup(context, *args, **kwargs):
     actions = [
         PushRosNamespace(robot_namespace),
         PushRosNamespace(imu_namespace),
-        PushRosNamespace(imu_name)
+        PushRosNamespace(imu_name),
     ]
 
     if mode == "live" and meta_description.get_driver_pkg() is not None:
@@ -111,22 +110,14 @@ def launch_setup(context, *args, **kwargs):
     return [GroupAction(actions)]
 
 
-
-
 def generate_launch_description():
 
     declared_arguments = []
 
     declared_arguments.append(DeclareLaunchArgument("meta_description_file_path"))
 
-    declared_arguments.append(
-        DeclareLaunchArgument("robot_namespace", default_value="")
-    )
+    declared_arguments.append(DeclareLaunchArgument("robot_namespace", default_value=""))
 
-    declared_arguments.append(
-        DeclareLaunchArgument("mode", default_value="live")
-    )
+    declared_arguments.append(DeclareLaunchArgument("mode", default_value="live"))
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])
