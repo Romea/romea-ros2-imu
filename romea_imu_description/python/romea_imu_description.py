@@ -59,6 +59,9 @@ def urdf(prefix, mode, name, type, model, rate, parent_link, xyz, rpy, ros_names
         get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
     )
 
+    if mode == "simulation":
+       mode += "_gazebo_classic" 
+
     urdf_xml = xacro.process_file(
         xacro_file,
         mappings={

@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<robot name="gps" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+
+
+  <xacro:macro
+    name="imu_sensor_simulation"
+    params="prefix mode link_name rate name specifications ros_namespace">
+
+    <xacro:property name="acc_noise_std"
+      value="${1.57*specifications['acceleration_noise_density']*sqrt(rate)}" />
+    <xacro:property name="acc_drift_std"
+      value="${specifications['acceleration_bias_stability_std']}" />
+    <xacro:property name="ang_noise_std"
+      value="${1.57*specifications['angular_speed_noise_density']*sqrt(rate)}" />
+    <xacro:property name="ang_drift_std"
+      value="${specifications['angular_speed_bias_stability_std']}" />
+    <xacro:property name="heading_std" value="${specifications['heading_std']}" />
+
+    <xacro:if value="${'gazebo' in  mode}">
+      <gazebo reference="${link_name}">
+        <material>Gazebo/Orange</material>
+
+        <sensor name="${name}" type="imu">
+          <always_on>true</always_on>
+          <update_rate>100</update_rate>
+          <imu>
+            <angular_velocity>
+              <x>
+                <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>${ang_noise_std}</stddev>
+                </noise>
+              </x>
+              <y>
+                <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>${ang_noise_std}</stddev>
+                </noise>
+              </y>
+              <z>
+                <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>${ang_noise_std}</stddev>
+                </noise>
+              </z>
+            </angular_velocity>
+            <linear_acceleration>
+              <x>
+                <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>${acc_noise_std}</stddev>
+                </noise>
+              </x>
+              <y>
+                <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>${acc_noise_std}</stddev>
+                </noise>
+              </y>
+              <z>
+                <noise type="gaussian">
+                  <mean>0.0</mean>
+                  <stddev>${acc_noise_std}</stddev>
+                </noise>
+              </z>
+            </linear_acceleration>
+          </imu>
+
+          <xacro:if value="${'classic' in mode}">
+            <plugin name="driver" filename="libgazebo_ros_imu_sensor.so">
+              <ros>
+                <namespace>${ros_namespace}</namespace>
+                <remapping>~/out:=data</remapping>
+              </ros>
+              <initial_orientation_as_reference>false</initial_orientation_as_reference>
+            </plugin>
+          </xacro:if>
+
+        </sensor>
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+
+</robot>
