@@ -19,54 +19,98 @@ from launch.actions import (
     IncludeLaunchDescription,
     DeclareLaunchArgument,
     OpaqueFunction,
+    GroupAction,
 )
 
-from launch.conditions import LaunchConfigurationEquals
+from launch_ros.actions import PushRosNamespace
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
+from romea_common_bringup import device_link_name
+from romea_imu_bringup import IMUMetaDescription
 
-# def get_mode(context):
-#     return LaunchConfiguration("mode").perform(context)
 
+def get_mode(context):
+    mode = LaunchConfiguration("mode").perform(context)
+    if mode == "simulation":
+        return "simulation_gazebo_classic"
+    else :
+        return mode
+    
 
 def get_robot_namespace(context):
     return LaunchConfiguration("robot_namespace").perform(context)
 
+def get_meta_description(context):
 
-def get_meta_description_file_path(context):
-    return LaunchConfiguration("meta_description_file_path").perform(context)
+    meta_description_file_path = LaunchConfiguration(
+        "meta_description_file_path"
+    ).perform(context)
+
+    return IMUMetaDescription(meta_description_file_path)
 
 
 def launch_setup(context, *args, **kwargs):
 
-    # mode = get_mode(context)
+    mode = get_mode(context)
     robot_namespace = get_robot_namespace(context)
-    meta_description_file_path = get_meta_description_file_path(context)
+    meta_description = get_meta_description(context)
 
-    driver = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [
-                PathJoinSubstitution(
+    imu_name = meta_description.get_name()
+    imu_namespace = str(meta_description.get_namespace() or "")
+
+    actions = [
+        PushRosNamespace(robot_namespace),
+        PushRosNamespace(imu_namespace),
+        PushRosNamespace(imu_name)
+    ]
+
+    if mode == "live" and meta_description.get_driver_pkg() is not None:
+
+        actions.append(
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
                     [
-                        FindPackageShare("romea_imu_bringup"),
-                        "launch",
-                        "imu_driver.launch.py",
+                        PathJoinSubstitution(
+                            [
+                                FindPackageShare("romea_imu_bringup"),
+                                "launch",
+                                "drivers/" + meta_description.get_driver_pkg() + ".launch.py",
+                            ]
+                        )
                     ]
-                )
-            ]
-        ),
-        launch_arguments={
-            "namespace": robot_namespace,
-            "meta_description_file_path": meta_description_file_path,
-        }.items(),
-        condition=LaunchConfigurationEquals("mode", "live"),
-    )
+                ),
+                launch_arguments={
+                    "device": meta_description.get_driver_device(),
+                    "baudrate": str(meta_description.get_driver_baudrate()),
+                    "frame_id": device_link_name(robot_namespace, imu_name),
+                }.items(),
+            )
+        )
 
-    # Add data processing algorithm here if needed
+    if mode == "simulation_gazebo":
+        actions.append(
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    [
+                        PathJoinSubstitution(
+                            [
+                                FindPackageShare("romea_camera_bringup"),
+                                "launch",
+                                "drivers/gazebo_bridge.launch.py",
+                            ]
+                        )
+                    ]
+                ),
+            )
+        )
 
-    return [driver]
+    # add launch viewer
+
+    return [GroupAction(actions)]
+
+
 
 
 def generate_launch_description():
