@@ -134,6 +134,7 @@
               <namespace>${ros_namespace}</namespace>
               <remapping>~/out:=data</remapping>
             </ros>
+            <frame_name>${link_name}</frame_name>
             <initial_orientation_as_reference>false</initial_orientation_as_reference>
           </plugin>
         </sensor>
