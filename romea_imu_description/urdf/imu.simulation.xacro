@@ -2,8 +2,6 @@
 <robot name="gps" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 
-
-
   <xacro:macro
     name="imu_sensor_simulation"
     params="prefix mode link_name rate name specifications ros_namespace">
@@ -79,6 +77,7 @@
                 <namespace>${ros_namespace}</namespace>
                 <remapping>~/out:=data</remapping>
               </ros>
+              <frame_name>${link_name}</frame_name>
               <initial_orientation_as_reference>false</initial_orientation_as_reference>
             </plugin>
           </xacro:if>
