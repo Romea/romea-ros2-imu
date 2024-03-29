@@ -46,9 +46,10 @@ Example :
 name: "imu"  #name of the imu
 driver: # ros2 driver configuration
   pkg: "xsens_driver" # ros2 driver package choiced by user and its parameters 
-  #  pkg: "bluespace_ai_xsens_mti_driver"
-  device: "/dev/ttyUSB0" # serial device
-  baudrate: 115200 # baudrate
+  executable: mtnode.py  # node to be launch
+  parameters: # driver node parameters
+    device: "/dev/ttyUSB0" # serial device
+    baudrate: 115200 # baudrate
 configuration: # imu configuration
   type: xsens # type
   model: mti # model
@@ -81,6 +82,8 @@ Supported drivers are [bluespace_ai_xsens_mti_driver](https://github.com/bluespa
 
 ```yaml
   pkg: "bluespace_ai_xsens_mti_driver"  # ROS2 package name  
+  executable xsens_mti_node  # node to be launch
+  parameters: # node parameters
     device:  "/dev/ttyUSB0"  # serial device
     baudrate: 115200 # serial baudrate
 ```
@@ -89,10 +92,12 @@ Supported drivers are [bluespace_ai_xsens_mti_driver](https://github.com/bluespa
 
 ```yaml
   pkg: "bluespace_ai_xsens_mti_driver"  # ROS2  package name  
+  executable: mtnode.py  # node to be launch
+  parameters: # node parameters
     device:  "/dev/ttyACM0"  # serial device
     baudrate: 115200 # serial baudrate
 ```
 
-For each driver a python launch file with the name of the ROS2 package is provided in launch directory. When the meta-description is read by the main launch file called imu_driver.launch.py the corresponding driver is automatically launched taking into account parameters define by user. Thanks to remapping defined inside each driver launch files, the data provided by drivers are always published in the same topic called:
+For each driver a python launch file with the name of the ROS2 package is provided in launch directory. When the meta-description is read by the main launch file called imu.launch.py the corresponding driver node is automatically launched taking into account parameters define by user. Thanks to remapping defined inside each driver launch files, the data provided by drivers are always published in the same topic called:
 
 - data(sensors_msgs/IMU)

@@ -2,8 +2,10 @@ name: imu
 namespace: ns
 driver:
   pkg: "xsens_driver"
-  device: "/dev/ttyUSB0"
-  baudrate: 115200
+  executable: mtnode.py
+  parameters:
+    device: "/dev/ttyUSB0"
+    baudrate: 115200
 configuration:
   type: xsens
   model: mti

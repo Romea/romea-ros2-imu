@@ -30,6 +30,10 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from romea_common_bringup import device_link_name
 from romea_imu_bringup import IMUMetaDescription
 
+import tempfile
+import yaml
+import os
+
 
 def get_mode(context):
     mode = LaunchConfiguration("mode").perform(context)
@@ -50,6 +54,14 @@ def get_meta_description(context):
     return IMUMetaDescription(meta_description_file_path)
 
 
+def generate_yaml_temp_file(prefix: str, data: dict):
+    fd, filepath = tempfile.mkstemp(prefix=prefix + '_', suffix='.yaml')
+    with os.fdopen(fd, 'w') as file:
+        file.write(yaml.safe_dump(data))
+
+    return filepath
+
+
 def launch_setup(context, *args, **kwargs):
 
     mode = get_mode(context)
@@ -67,6 +79,9 @@ def launch_setup(context, *args, **kwargs):
 
     if mode == "live" and meta_description.get_driver_pkg() is not None:
 
+        parameters = meta_description.get_driver_parameters()
+        config_path = generate_yaml_temp_file('imu_driver', parameters)
+
         actions.append(
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
@@ -80,9 +95,14 @@ def launch_setup(context, *args, **kwargs):
                         )
                     ]
                 ),
+                # launch_arguments={
+                #     "device": meta_description.get_driver_device(),
+                #     "baudrate": str(meta_description.get_driver_baudrate()),
+                #     "frame_id": device_link_name(robot_namespace, ),
+                # }.items(),
                 launch_arguments={
-                    "device": meta_description.get_driver_device(),
-                    "baudrate": str(meta_description.get_driver_baudrate()),
+                    "config_path": config_path,
+                    "executable": meta_description.get_driver_executable(),
                     "frame_id": device_link_name(robot_namespace, imu_name),
                 }.items(),
             )

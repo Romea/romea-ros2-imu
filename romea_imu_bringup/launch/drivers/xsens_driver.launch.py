@@ -18,24 +18,28 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+import yaml
+
 
 def launch_setup(context, *args, **kwargs):
 
-    port = LaunchConfiguration("device").perform(context)
-    baudrate = LaunchConfiguration("baudrate").perform(context)
+    executable = LaunchConfiguration("executable").perform(context)
+    config_path = LaunchConfiguration("config_path").perform(context)
     frame_id = LaunchConfiguration("frame_id").perform(context)
 
     driver = LaunchDescription()
 
-    print("xsens_driver")
+    print(f'config_path: {config_path}')
+    with open(config_path, 'r') as file:
+        config_parameters = yaml.safe_load(file)
+
     driver_node = Node(
         package="xsens_driver",
-        executable="mtnode.py",
+        executable=executable,
         name="driver",
         output="screen",
         parameters=[
-            {"port": port},
-            {"baudrate": int(baudrate)},
+            config_parameters,
             {"frame_id": frame_id},
             {"initial_wait": 1.0},
             {"timeout": 0.01},
@@ -58,10 +62,11 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description():
 
-    declared_arguments = []
-    declared_arguments.append(DeclareLaunchArgument("device"))
-    declared_arguments.append(DeclareLaunchArgument("baudrate"))
-    declared_arguments.append(DeclareLaunchArgument("frame_id"))
+    declared_arguments = [
+        DeclareLaunchArgument("executable"),
+        DeclareLaunchArgument("config_path"),
+        DeclareLaunchArgument("frame_id"),
+    ]
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]

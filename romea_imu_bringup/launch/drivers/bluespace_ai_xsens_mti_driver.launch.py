@@ -18,29 +18,33 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction, SetEnvironment
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+import yaml
+
 
 def launch_setup(context, *args, **kwargs):
 
-    port = LaunchConfiguration("device").perform(context)
-    baudrate = LaunchConfiguration("baudrate").perform(context)
+    executable = LaunchConfiguration("executable").perform(context)
+    config_path = LaunchConfiguration("config_path").perform(context)
     frame_id = LaunchConfiguration("frame_id").perform(context)
 
     driver = LaunchDescription()
 
-    print("bluespace")
+    print(f'config_path: {config_path}')
+    with open(config_path, 'r') as file:
+        config_parameters = yaml.safe_load(file)
+
     # Set env var to print messages to stdout immediately
     arg = SetEnvironmentVariable("RCUTILS_CONSOLE_STDOUT_LINE_BUFFERED", "1")
     driver.add_action(arg)
 
     driver_node = Node(
         package="bluespace_ai_xsens_mti_driver",
-        executable="xsens_mti_node",
+        executable=executable,
         name="driver",
         output="screen",
         parameters=[
+            config_parameters,
             {"scan_for_devices": False},
-            {"port": port},
-            {"baudrate": int(baudrate)},
             {"frame_id": frame_id},
             {"pub_imu": True},
             {"pub_quaternion": False},
@@ -68,10 +72,11 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description():
 
-    declared_arguments = []
-    declared_arguments.append(DeclareLaunchArgument("device"))
-    declared_arguments.append(DeclareLaunchArgument("baudrate"))
-    declared_arguments.append(DeclareLaunchArgument("frame_id"))
+    declared_arguments = [
+        DeclareLaunchArgument("executable"),
+        DeclareLaunchArgument("config_path"),
+        DeclareLaunchArgument("frame_id"),
+    ]
 
     return LaunchDescription(
         declared_arguments + [OpaqueFunction(function=launch_setup)]
