@@ -1,7 +1,7 @@
 name: imu
 namespace: ns
 driver:
-  pkg: "xsens_driver"
+  package: "xsens_driver"
   executable: mtnode.py
   parameters:
     device: "/dev/ttyUSB0"

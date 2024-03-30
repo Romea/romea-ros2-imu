@@ -77,7 +77,7 @@ def launch_setup(context, *args, **kwargs):
         PushRosNamespace(imu_name),
     ]
 
-    if mode == "live" and meta_description.get_driver_pkg() is not None:
+    if mode == "live" and meta_description.get_driver_package() is not None:
 
         parameters = meta_description.get_driver_parameters()
         config_path = generate_yaml_temp_file('imu_driver', parameters)
@@ -90,7 +90,7 @@ def launch_setup(context, *args, **kwargs):
                             [
                                 FindPackageShare("romea_imu_bringup"),
                                 "launch",
-                                "drivers/" + meta_description.get_driver_pkg() + ".launch.py",
+                                "drivers/" + meta_description.get_driver_package() + ".launch.py",
                             ]
                         )
                     ]
