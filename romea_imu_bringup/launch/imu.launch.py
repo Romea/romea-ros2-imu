@@ -77,7 +77,7 @@ def launch_setup(context, *args, **kwargs):
         PushRosNamespace(imu_name),
     ]
 
-    if mode == "live" and meta_description.get_driver_package() is not None:
+    if mode == "live" and meta_description.has_driver_configuration():
 
         parameters = meta_description.get_driver_parameters()
         config_path = generate_yaml_temp_file('imu_driver', parameters)
