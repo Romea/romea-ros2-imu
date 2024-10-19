@@ -1,3 +1,5 @@
+# ROMEA IMU Bringup #
+
 # 1) Overview #
 
 The romea_imu_bringup package provides  : 
@@ -82,7 +84,7 @@ Supported drivers are [bluespace_ai_xsens_mti_driver](https://github.com/bluespa
 
 ```yaml
   pkg: "bluespace_ai_xsens_mti_driver"  # ROS2 package name  
-  executable xsens_mti_node  # node to be launch
+  executable: xsens_mti_node  # node to be launch
   parameters: # node parameters
     device:  "/dev/ttyUSB0"  # serial device
     baudrate: 115200 # serial baudrate
