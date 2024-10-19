@@ -39,13 +39,13 @@ def launch_setup(context, *args, **kwargs):
         name="driver",
         output="screen",
         parameters=[
-            config_parameters,
             {"frame_id": frame_id},
             {"initial_wait": 1.0},
             {"timeout": 0.01},
             {"angular_velocity_covariance_diagonal": [0.0, 0.0, 0.0]},
             {"linear_acceleration_covariance_diagonal": [0.0, 0.0, 0.0]},
             {"orientation_covariance_diagonal": [0.0, 0.0, 0.0]},
+            config_parameters,
         ],
         remappings=[
             ("imu/data", "data"),

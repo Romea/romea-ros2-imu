@@ -43,7 +43,6 @@ def launch_setup(context, *args, **kwargs):
         name="driver",
         output="screen",
         parameters=[
-            config_parameters,
             {"scan_for_devices": False},
             {"frame_id": frame_id},
             {"pub_imu": True},
@@ -62,6 +61,7 @@ def launch_setup(context, *args, **kwargs):
             {"pub_transform": False},
             {"pub_positionLLA": False},
             {"pub_velocity": False},
+            config_parameters,
         ],
         arguments=[],
     )
