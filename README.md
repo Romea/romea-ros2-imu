@@ -9,9 +9,7 @@ This stack contains several ROS2 packages for working with IMU, both in real-wor
 3. mkdir src
 4. wget https://raw.githubusercontent.com/Romea/romea-ros2-imu/refs/heads/main/romea_imu_public.repos
 5. vcs import src < romea_imu_public.repos
-6. build packages
-   - catkin build for ROS1
-   - colcon build for ROS2
+6. colcon build
 7. see bringup package to launch imu
 
 ## **Contributing**
