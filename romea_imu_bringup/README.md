@@ -12,7 +12,7 @@ The romea_imu_bringup package provides  :
    You can launch a driver using the following command: 
 
     ```console
-    ros2 launch romea_imu_bringup imu_driver.launch.py robot_namespace:=robot meta_description_file_path:=/path_to_file/meta_description_file.yaml
+    ros2 launch romea_imu_bringup imu.launch.py mode:=live robot_namespace:=robot meta_description_file_path:=/path_to_file/meta_description_file.yaml
     ```
 
    where:
