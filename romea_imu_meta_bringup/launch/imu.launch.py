@@ -28,7 +28,7 @@ from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from romea_common_bringup import device_link_name
-from romea_imu_bringup import IMUMetaDescription
+from romea_imu_meta_bringup import IMUMetaDescription
 
 import tempfile
 import yaml

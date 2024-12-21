@@ -16,12 +16,12 @@
 import os
 import pytest
 from numpy import radians
-from romea_imu_bringup import IMUMetaDescription
+from romea_imu_meta_bringup import IMUMetaDescription
 
 
 @pytest.fixture(scope="module")
 def meta_description():
-    meta_description_file_path = os.path.join(os.getcwd(), "test_imu_bringup.yaml")
+    meta_description_file_path = os.path.join(os.getcwd(), "test_imu_meta_bringup.yaml")
     return IMUMetaDescription(meta_description_file_path)
 
 

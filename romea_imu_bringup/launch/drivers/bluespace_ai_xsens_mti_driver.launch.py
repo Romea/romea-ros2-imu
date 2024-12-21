@@ -24,13 +24,13 @@ import yaml
 def launch_setup(context, *args, **kwargs):
 
     executable = LaunchConfiguration("executable").perform(context)
-    config_path = LaunchConfiguration("config_path").perform(context)
+    configuration_file_path = LaunchConfiguration("configuration_file_path").perform(context)
     frame_id = LaunchConfiguration("frame_id").perform(context)
 
     driver = LaunchDescription()
 
-    print(f'config_path: {config_path}')
-    with open(config_path, 'r') as file:
+    print(f'configuration_file_path: {configuration_file_path}')
+    with open(configuration_file_path, 'r') as file:
         config_parameters = yaml.safe_load(file)
 
     # Set env var to print messages to stdout immediately
@@ -74,7 +74,8 @@ def generate_launch_description():
 
     declared_arguments = [
         DeclareLaunchArgument("executable"),
-        DeclareLaunchArgument("config_path"),
+        DeclareLaunchArgument("configuration_file_path"),
+        DeclareLaunchArgument("component_container", default_value=""),
         DeclareLaunchArgument("frame_id"),
     ]
 

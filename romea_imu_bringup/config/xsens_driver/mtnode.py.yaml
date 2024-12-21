@@ -1,0 +1,4 @@
+device: "/dev/ttyUSB0"
+baudrate: 115200
+#timeout: 0.002  # optional
+#initial_wait: 0.1  # optional
