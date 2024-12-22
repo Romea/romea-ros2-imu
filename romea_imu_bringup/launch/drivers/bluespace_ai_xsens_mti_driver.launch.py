@@ -24,6 +24,7 @@ import yaml
 def launch_setup(context, *args, **kwargs):
 
     executable = LaunchConfiguration("executable").perform(context)
+    executable_namespace = LaunchConfiguration("executable_namespace").perform(context)
     configuration_file_path = LaunchConfiguration("configuration_file_path").perform(context)
     frame_id = LaunchConfiguration("frame_id").perform(context)
 
@@ -41,6 +42,7 @@ def launch_setup(context, *args, **kwargs):
         package="bluespace_ai_xsens_mti_driver",
         executable=executable,
         name="driver",
+        namespace=executable_namespace,
         output="screen",
         parameters=[
             {"scan_for_devices": False},
@@ -74,6 +76,7 @@ def generate_launch_description():
 
     declared_arguments = [
         DeclareLaunchArgument("executable"),
+        DeclareLaunchArgument("executable_namespace"),
         DeclareLaunchArgument("configuration_file_path"),
         DeclareLaunchArgument("component_container", default_value=""),
         DeclareLaunchArgument("frame_id"),
