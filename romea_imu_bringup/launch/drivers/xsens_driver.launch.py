@@ -38,7 +38,7 @@ def launch_setup(context, *args, **kwargs):
         package="xsens_driver",
         executable=executable,
         name="driver",
-        namespace= executable_namespace,
+        namespace=executable_namespace,
         output="screen",
         parameters=[
             {"frame_id": frame_id},
