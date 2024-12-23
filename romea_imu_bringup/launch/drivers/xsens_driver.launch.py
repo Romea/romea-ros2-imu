@@ -26,7 +26,6 @@ def launch_setup(context, *args, **kwargs):
     executable = LaunchConfiguration("executable").perform(context)
     executable_namespace = LaunchConfiguration("executable_namespace").perform(context)
     configuration_file_path = LaunchConfiguration("configuration_file_path").perform(context)
-    frame_id = LaunchConfiguration("frame_id").perform(context)
 
     driver = LaunchDescription()
 
@@ -41,7 +40,6 @@ def launch_setup(context, *args, **kwargs):
         namespace=executable_namespace,
         output="screen",
         parameters=[
-            {"frame_id": frame_id},
             {"initial_wait": 1.0},
             {"timeout": 0.01},
             {"angular_velocity_covariance_diagonal": [0.0, 0.0, 0.0]},
@@ -66,10 +64,9 @@ def generate_launch_description():
 
     declared_arguments = [
         DeclareLaunchArgument("executable"),
-        DeclareLaunchArgument("executable_namespace"),
-        DeclareLaunchArgument("configuration_file_path"),
+        DeclareLaunchArgument("executable_namespace", default_value=""),
         DeclareLaunchArgument("component_container", default_value=""),
-        DeclareLaunchArgument("frame_id"),
+        DeclareLaunchArgument("configuration_file_path"),
     ]
 
     return LaunchDescription(

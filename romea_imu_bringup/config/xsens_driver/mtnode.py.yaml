@@ -1,4 +1,8 @@
-device: "/dev/ttyUSB0"
+frame_id: imu_link
+device: /dev/ttyUSB0
 baudrate: 115200
-#timeout: 0.002  # optional
-#initial_wait: 0.1  # optional
+#timeout: 0.01  # optional 0.01 by default
+#initial_wait: 1  # optional 1 by default
+#angular_velocity_covariance_diagonal: [0.0, 0.0, 0.0]  # optional null vector by default
+#linear_acceleration_covariance_diagonal: [0.0, 0.0, 0.0] # optional null vector by default
+#orientation_covariance_diagonal": [0.0, 0.0, 0.0] # optional null vector by default

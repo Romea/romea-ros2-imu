@@ -26,7 +26,6 @@ def launch_setup(context, *args, **kwargs):
     executable = LaunchConfiguration("executable").perform(context)
     executable_namespace = LaunchConfiguration("executable_namespace").perform(context)
     configuration_file_path = LaunchConfiguration("configuration_file_path").perform(context)
-    frame_id = LaunchConfiguration("frame_id").perform(context)
 
     driver = LaunchDescription()
 
@@ -46,7 +45,6 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
         parameters=[
             {"scan_for_devices": False},
-            {"frame_id": frame_id},
             {"pub_imu": True},
             {"pub_quaternion": False},
             {"pub_mag": False},
@@ -76,10 +74,9 @@ def generate_launch_description():
 
     declared_arguments = [
         DeclareLaunchArgument("executable"),
-        DeclareLaunchArgument("executable_namespace"),
-        DeclareLaunchArgument("configuration_file_path"),
+        DeclareLaunchArgument("executable_namespace", default_value=""),
         DeclareLaunchArgument("component_container", default_value=""),
-        DeclareLaunchArgument("frame_id"),
+        DeclareLaunchArgument("configuration_file_path"),
     ]
 
     return LaunchDescription(
