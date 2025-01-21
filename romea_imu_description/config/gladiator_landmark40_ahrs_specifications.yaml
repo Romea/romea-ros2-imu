@@ -1,10 +1,14 @@
-acceleration_noise_density: 0.001177 # m/s^2/√Hz
-acceleration_bias_stability_std: 0.000784 # m/s^2
+type: AHRS
+rate:
+  default: 100
+  list: [100, 200]
+acceleration_noise_density: 1.1772e-03 # m/s^2/√Hz
+acceleration_bias_stability_std: 0.784e-03 # m/s^2
 acceleration_range: 98.1 #m/s^2
-angular_speed_noise_density: 3.4907e-04 #rad/s/√Hz
-angular_speed_bias_stability_std: 1.7453e-02 #rad/s
-angular_speed_range: 5.236. #rad/s
+angular_speed_noise_density: 0.002 #deg/s/√Hz
+angular_speed_bias_stability_std: 6 #deg/h
+angular_speed_range: 300 #deg/s
 magnetic_noise_density: 15.e-9 #T/√Hz
 magnetic_bias_stability_std: 0 #T
 magnetic_range: 0.0001 #T
-heading_std: 0.01745 #rad
+heading_std: 1 #deg

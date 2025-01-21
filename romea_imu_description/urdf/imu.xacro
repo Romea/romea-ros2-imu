@@ -3,32 +3,35 @@
   xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="imu_sensor"
-    params="prefix mode name xyz rpy parent_link rate specifications geometry mesh_visual ros_namespace">
+    params="prefix mode name configuration geometry mesh_visual ros_namespace">
 
     <xacro:property name="link_name"
       value="${prefix}${name}_link" />
     <xacro:property name="joint_name"
       value="${prefix}${name}_joint" />
     <xacro:property name="parent_link_name"
-      value="${prefix}${parent_link}" />
-    <xacro:property name="data_topic"
-      value="${name}/data" />
+      value="${prefix}${configuration['parent_link']}" />
 
-    <xacro:property name="mass" 
+    <xacro:property name="xyz"
+      value="${configuration['xyz']}" />
+    <xacro:property name="rpy"
+      value="${configuration['rpy']}" />
+
+    <xacro:property name="mass"
       value="${geometry['mass']}" />
-    <xacro:property name="aabb_length" 
+    <xacro:property name="aabb_length"
       value="${geometry['aabb']['length']}" />
-    <xacro:property name="aabb_width" 
+    <xacro:property name="aabb_width"
       value="${geometry['aabb']['width']}" />
-    <xacro:property name="aabb_height" 
+    <xacro:property name="aabb_height"
       value="${geometry['aabb']['height']}" />
-    <xacro:property name="aabb_center" 
+    <xacro:property name="aabb_center"
       value="${geometry['aabb']['center']}" />
 
     <xacro:if value="${mesh_visual == True and 'mesh' in geometry}">
-      <xacro:property name="mesh_xyz" 
+      <xacro:property name="mesh_xyz"
         value="${geometry['mesh']['xyz']}" />
-      <xacro:property name="mesh_rpy" 
+      <xacro:property name="mesh_rpy"
         value="${geometry['mesh']['rpy']}" />
       <xacro:property name="mesh_scale"
         value="${geometry['mesh']['scale']}" />
@@ -50,7 +53,7 @@
       <visual>
         <xacro:if value="${mesh_visual == True and 'mesh' in geometry}">
           <origin xyz="${mesh_xyz[0]} ${mesh_xyz[1]} ${mesh_xyz[2]}"
-            rpy="${mesh_rpy[0]} ${mesh_rpy[1]} ${mesh_rpy[2]}" />
+            rpy="${mesh_rpy[0]/180.*pi} ${mesh_rpy[1]/180.*pi} ${mesh_rpy[2]/180.*pi}" />
           <geometry>
             <mesh filename="${mesh_filename}"
               scale="${mesh_scale[0]} ${mesh_scale[1]} ${mesh_scale[2]}" />
@@ -75,7 +78,8 @@
 
     <joint name="${joint_name}" type="fixed">
       <axis xyz="0 0 1" />
-      <origin xyz="${xyz}" rpy="${rpy}" />
+      <origin xyz="${xyz[0]} ${xyz[1]} ${xyz[2]}"
+        rpy="${rpy[0]/180.*pi} ${rpy[1]/180.*pi} ${rpy[2]/180.*pi}" />
       <parent link="${parent_link_name}" />
       <child link="${link_name}" />
     </joint>
@@ -84,12 +88,11 @@
       <xacro:include filename="$(find romea_imu_description)/urdf/imu.simulation.xacro" />
       <xacro:imu_sensor_simulation
         prefix="${prefix}"
-        mode="${mode}" 
+        mode="${mode}"
         name="${name}"
-        rate="${rate}" 
-        link_name="${link_name}" 
-        specifications="${specifications}" 
-        ros_namespace="${ros_namespace}"/>
+        link_name="${link_name}"
+        configuration="${configuration}"
+        ros_namespace="${ros_namespace}" />
     </xacro:if>
 
   </xacro:macro>

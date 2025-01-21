@@ -1,0 +1,11 @@
+rate: Hz
+acceleration_noise_density: m/s^2/√Hz
+acceleration_bias_stability_std: m/s^2
+acceleration_range: m/s^2
+angular_speed_noise_density: °/s/√Hz
+angular_speed_bias_stability_std: °/s
+angular_speed_range: °/s
+magnetic_noise_density: T/√Hz
+magnetic_bias_stability_std: T
+magnetic_range: T
+heading_std: °
