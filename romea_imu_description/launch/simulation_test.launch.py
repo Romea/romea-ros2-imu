@@ -33,7 +33,7 @@ def launch_setup(context, *args, **kwargs):
     name = "imu"
 
     description = {
-        "type": LaunchConfiguration("imu_type").perform(context),
+        "manufacturer": LaunchConfiguration("imu_manufacturer").perform(context),
         "model": LaunchConfiguration("imu_model").perform(context),
         "rate": int(LaunchConfiguration("imu_rate").perform(context)),
     }
@@ -81,7 +81,7 @@ def generate_launch_description():
 
     declared_arguments = [
         DeclareLaunchArgument("simulator", default_value="gazebo_classic"),
-        DeclareLaunchArgument("imu_type", default_value=""),
+        DeclareLaunchArgument("imu_manufacturer", default_value=""),
         DeclareLaunchArgument("imu_model", default_value=""),
         DeclareLaunchArgument("imu_rate", default_value="100"),
     ]
