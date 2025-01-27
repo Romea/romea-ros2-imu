@@ -1,0 +1,60 @@
+# Copyright 2022 INRAE, French National Research Institute for Agriculture, Food and Environment
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from ament_index_python.packages import get_package_share_directory
+
+from romea_imu_description import (
+    get_imu_complete_configuration,
+    get_imu_geometry_file_path,
+    get_imu_geometry,
+    get_imu_specifications_file_path,
+    get_imu_specifications,
+)
+
+
+def test_get_imu_specifications_file_path_ok():
+    assert (
+        get_imu_specifications_file_path("gladiator", "landmark40")
+        == get_package_share_directory("romea_imu_description")
+        + "/config/gladiator_landmarkx0_specifications.yaml"
+    )
+
+
+def test_get_imu_specifications_ok():
+    specifications = get_imu_specifications("gladiator", "landmark40")
+    assert specifications["angular_speed_noise_density"]["dict"]["landmark40"][300] == 0.004
+
+
+def test_get_imu_geometry_file_path_ok():
+    assert (
+        get_imu_geometry_file_path("gladiator", "landmark40")
+        == get_package_share_directory("romea_imu_description")
+        + "/config/gladiator_landmarkx0_geometry.yaml"
+    )
+
+
+def test_get_imu_geometry_ok():
+    assert get_imu_geometry("gladiator", "landmark40")["mass"] == 0.113
+
+
+def test_get_gps_receiver_complete_configuration_ok():
+    user_description = {"manufacturer": "gladiator", "model": "landmark40", "rate": 100}
+
+    configuration = get_imu_complete_configuration("imu", user_description)
+
+    assert configuration["type"] == "AHRS"
+    assert configuration["acceleration_noise_density"] == 1.1772e-03
+    assert configuration["angular_speed_noise_density"] == 0.004
+    assert configuration["magnetic_noise_density"] == 15.0e-9
+    assert configuration["rate"] == 100

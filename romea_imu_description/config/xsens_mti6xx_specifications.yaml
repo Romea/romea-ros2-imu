@@ -1,4 +1,11 @@
-type: AHRS
+model:
+  list: ["mti610", "mti620", "mti630"]
+type:
+  depend: model
+  dict:
+    "mti610": IMU
+    "mti620": VRU
+    "mti630": AHRS
 rate:
   default: 100
   list: [1, 2, 4, 5, 10, 20, 40, 50, 80, 100, 200, 400]

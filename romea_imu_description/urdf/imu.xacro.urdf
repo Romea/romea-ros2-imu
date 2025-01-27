@@ -15,11 +15,11 @@
   <xacro:property name="configuration"
     value="${load_yaml(sensor_config_yaml_file)}" />
 
-  <xacro:property name="geometry_yaml_file"
-    value="$(arg geometry_yaml_file)" />
+  <xacro:property name="geometry_config_yaml_file"
+    value="$(arg geometry_config_yaml_file)" />
 
   <xacro:property name="geometry"
-    value="${load_yaml(geometry_yaml_file)}" />
+    value="${load_yaml(geometry_config_yaml_file)}" />
 
   <xacro:include filename="$(find romea_imu_description)/urdf/imu.xacro" />
   <xacro:imu_sensor

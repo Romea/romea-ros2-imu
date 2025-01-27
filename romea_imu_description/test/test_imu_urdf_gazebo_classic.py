@@ -23,18 +23,25 @@ def urdf_xml():
     prefix = "robot_"
     mode = "simulation"
     name = "imu"
-    type = "xsens"
-    model = "mti"
-    rate = "100"
-    parent_link = "base_link"
-    xyz = [1.0, 2.0, 3.0]
-    rpy = [4.0, 5.0, 6.0]
+
+    description = {
+        "manufacturer": "xsens",
+        "model": "mti",
+        "rate": 100,
+    }
+
+    location = {
+        "parent_link": "base_link",
+        "xyz": [1.0, 2.0, 3.0],
+        "rpy": [4.0, 5.0, 6.0]
+    }
+
     ros_namespace = "ns"
 
-    return ET.fromstring(urdf(prefix, mode, name,
-                              type, model, rate,
-                              parent_link, xyz, rpy,
-                              ros_namespace))
+    with open('/tmp/urdf', 'w') as file:
+        file.write(urdf(prefix, mode, name, description, location, ros_namespace))
+
+    return ET.fromstring(urdf(prefix, mode, name, description, location, ros_namespace))
 
 
 def test_imu_name(urdf_xml):
@@ -46,7 +53,11 @@ def test_imu_position(urdf_xml):
 
 
 def test_imu_orientation(urdf_xml):
-    assert urdf_xml.find("joint/origin").get("rpy") == "4.0 5.0 6.0"
+    print("orientation", urdf_xml.find("joint/origin").get("rpy"))
+    assert (
+        urdf_xml.find("joint/origin").get("rpy")
+        == "0.06981317007977318 0.08726646259971647 0.10471975511965977"
+    )
 
 
 def test_imu_parent_link(urdf_xml):
@@ -59,3 +70,21 @@ def test_imu_rate(urdf_xml):
 
 def test_plugin_namespace(urdf_xml):
     assert urdf_xml.find("gazebo/sensor/plugin/ros/namespace").text == "ns"
+
+
+def test_plugin_frame_name(urdf_xml):
+    assert urdf_xml.find("gazebo/sensor/plugin/frame_name").text == "robot_imu_link"
+
+
+def test_angular_velocity_std_dev(urdf_xml):
+    assert (
+        urdf_xml.find("gazebo/sensor/imu/angular_velocity/x/noise/stddev").text
+        == "0.01370083462815549"
+    )
+
+
+def test_linear_accerleration_std_dev(urdf_xml):
+    assert (
+        urdf_xml.find("gazebo/sensor/imu/linear_acceleration/x/noise/stddev").text
+        == "0.00785"
+    )
