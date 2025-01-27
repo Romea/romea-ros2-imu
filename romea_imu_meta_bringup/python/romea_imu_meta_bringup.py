@@ -14,7 +14,12 @@
 
 
 from numpy import radians
-from romea_common_bringup import MetaDescription, robot_urdf_prefix, device_namespace
+from romea_common_meta_bringup import (
+    MetaDescription,
+    robot_urdf_prefix,
+    device_namespace,
+    device_link_name
+)
 import romea_imu_description
 
 
@@ -44,14 +49,20 @@ class IMUMetaDescription:
     def get_driver_baudrate(self):
         return self.meta_description.get("baudrate", "driver")
 
-    def get_type(self):
-        return self.meta_description.get("type", "configuration")
+    def get_configuration(self):
+        return self.meta_description.get("configuration")
+
+    def get_manufacturer(self):
+        return self.meta_description.get("manufacturer", "configuration")
 
     def get_model(self):
         return self.meta_description.get("model", "configuration")
 
     def get_rate(self):
         return self.meta_description.get("rate", "configuration")
+
+    def get_geometry(self):
+        return self.meta_description.get("geometry")
 
     def get_parent_link(self):
         return self.meta_description.get("parent_link", "geometry")
@@ -76,16 +87,29 @@ def load_meta_description(meta_description_file_path):
     return IMUMetaDescription(meta_description_file_path)
 
 
-def get_imu_specifications(meta_description):
+def get_sensor_specifications(meta_description):
     return romea_imu_description.get_imu_specifications(
-        meta_description.get_type(), meta_description.get_model()
+        meta_description.get_manufacturer(), meta_description.get_model()
     )
 
 
-def get_imu_geometry(meta_description):
+def get_sensor_geometry(meta_description):
     return romea_imu_description.get_imu_geometry(
-        meta_description.get_type(), meta_description.get_model()
+        meta_description.get_manufacturer(), meta_description.get_model()
     )
+
+
+def get_complete_sensor_configuration(meta_description):
+    return romea_imu_description.get_imu_complete_configuration(
+        meta_description.get_name(), meta_description.get_configuration()
+    )
+
+
+def get_complete_driver_parameters(meta_description, robot_namespace):
+    frame_id = device_link_name(robot_namespace, meta_description.get_name())
+    parameters = meta_description.get_driver_parameters()
+    parameters["frame_id"] = frame_id
+    return parameters
 
 
 def urdf_description(robot_namespace, mode, meta_description_file_path):
@@ -93,18 +117,15 @@ def urdf_description(robot_namespace, mode, meta_description_file_path):
     meta_description = IMUMetaDescription(meta_description_file_path)
 
     ros_namespace = device_namespace(
-        robot_namespace, meta_description.get_namespace(), meta_description.get_name()
+        robot_namespace,
+        meta_description.get_namespace(),
+        meta_description.get_name()
     )
-
     return romea_imu_description.urdf(
         robot_urdf_prefix(robot_namespace),
         mode,
         meta_description.get_name(),
-        meta_description.get_type(),
-        meta_description.get_model(),
-        meta_description.get_rate(),
-        meta_description.get_parent_link(),
-        meta_description.get_xyz(),
-        meta_description.get_rpy_rad(),
+        meta_description.get_configuration(),
+        meta_description.get_geometry(),
         ros_namespace,
     )

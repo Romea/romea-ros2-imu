@@ -22,13 +22,12 @@ from launch.actions import (
     GroupAction,
 )
 
-from launch_ros.actions import PushRosNamespace
 from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
 from launch_ros.substitutions import FindPackageShare
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
-from romea_common_bringup import device_link_name, device_namespace
-from romea_imu_meta_bringup import IMUMetaDescription
+from romea_common_bringup import device_namespace
+from romea_imu_meta_bringup import IMUMetaDescription, get_complete_driver_parameters
 
 import tempfile
 import yaml
@@ -71,16 +70,18 @@ def launch_setup(context, *args, **kwargs):
     imu_name = meta_description.get_name()
     imu_namespace = str(meta_description.get_namespace() or "")
     imu_full_namespace = device_namespace(robot_namespace, imu_namespace, imu_name)
-    imu_frame_id = device_link_name(robot_namespace, imu_name)
 
     actions = []
     if mode == "live" and meta_description.has_driver_configuration():
 
         executable = meta_description.get_driver_executable()
-        executable_parameters = meta_description.get_driver_parameters()
-        executable_parameters["frame_id"] = imu_frame_id
-       
-        configuration_file_path = generate_yaml_temp_file('imu_driver', executable_parameters)
+        executable_parameters = get_complete_driver_parameters(
+            meta_description, robot_namespace
+        )
+
+        driver_configuration_file_path = generate_yaml_temp_file(
+            'imu_driver', executable_parameters
+        )
 
         actions.append(
             IncludeLaunchDescription(
@@ -98,7 +99,7 @@ def launch_setup(context, *args, **kwargs):
                 launch_arguments={
                     "executable": executable,
                     "executable_namespace": imu_full_namespace,
-                    "configuration_file_path": configuration_file_path,
+                    "configuration_file_path": driver_configuration_file_path,
                 }.items(),
             )
         )

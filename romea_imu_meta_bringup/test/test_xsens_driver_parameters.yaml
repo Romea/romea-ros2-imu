@@ -1,0 +1,7 @@
+name: imu
+driver:
+  package: "xsens_driver"
+  executable: mtnode.py
+  parameters:
+    device: "/dev/ttyUSB0"
+    baudrate: 115200
