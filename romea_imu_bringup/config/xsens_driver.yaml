@@ -1,0 +1,15 @@
+driver:
+  package: xsens_driver
+  executable: mtnode.py
+  parameters:
+    device: /dev/ttyUSB0
+    baudrate: 115200
+    initial_wait: 1.0
+    timeout: 0.01
+    angular_velocity_covariance_diagonal: [0.0, 0.0, 0.0]
+    linear_acceleration_covariance_diagonal: [0.0, 0.0, 0.0]
+    orientation_covariance_diagonal: [0.0, 0.0, 0.0]
+  remappings:
+    imu/data: data
+    imu/data_str: data_str
+    imu/mag: mag
