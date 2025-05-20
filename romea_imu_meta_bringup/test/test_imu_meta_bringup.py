@@ -15,7 +15,6 @@
 
 import os
 import pytest
-from numpy import radians
 from romea_imu_meta_bringup import (
     IMUMetaDescription,
     get_sensor_specifications,
@@ -38,22 +37,8 @@ def test_get_namespace(meta_description):
     assert meta_description.get_namespace() == "ns"
 
 
-def test_has_driver_configuration(meta_description):
-    assert meta_description.has_driver_configuration() is True
-
-
-def test_get_driver_package(meta_description):
-    assert meta_description.get_driver_package() == "xsens_driver"
-
-
-def test_get_driver_executable(meta_description):
-    assert meta_description.get_driver_executable() == "mtnode.py"
-
-
-def test_get_driver_parameters(meta_description):
-    parameters = meta_description.get_driver_parameters()
-    assert parameters["device"] == "/dev/ttyUSB0"
-    assert parameters["baudrate"] == 115200
+def test_get_launch_file_configuration(meta_description):
+    assert "imu_driver" in meta_description.get_launch_file_configuration()
 
 
 def test_get_manufacturer(meta_description):
@@ -76,12 +61,8 @@ def test_get_xyz(meta_description):
     assert meta_description.get_xyz() == [1.0, 2.0, 3.0]
 
 
-def test_get_rpy_deg(meta_description):
-    assert meta_description.get_rpy_deg() == [4.0, 5.0, 6.0]
-
-
-def test_get_rpy_rad(meta_description):
-    assert meta_description.get_rpy_rad() == radians([4.0, 5.0, 6.0]).tolist()
+def test_get_rpy(meta_description):
+    assert meta_description.get_rpy() == [4.0, 5.0, 6.0]
 
 
 def test_get_records(meta_description):

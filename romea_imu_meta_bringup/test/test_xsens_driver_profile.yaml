@@ -1,0 +1,13 @@
+name: imu
+launch_file:
+  imu_driver:
+    profile: xsens_driver_profile.yaml
+    configuration:
+      driver:
+        parameters:
+          device: "/dev/ttyUSB0"
+          baudrate: 115200
+configuration:
+  manufacturer: xsens
+  model: mti
+  rate: 100

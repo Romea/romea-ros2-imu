@@ -1,7 +1,0 @@
-name: imu
-driver:
-  package: "xsens_driver"
-  executable: xsens_mti_node
-  parameters:
-    port: /dev/ttyUSB0
-    baudrate: 115200
