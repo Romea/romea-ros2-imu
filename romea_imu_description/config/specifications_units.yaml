@@ -9,3 +9,5 @@ magnetic_noise_density: T/√Hz
 magnetic_bias_stability_std: T
 magnetic_range: T
 heading_std: °
+xyz: m
+rpy: °

@@ -15,6 +15,7 @@
 
 import xacro
 import yaml
+from romea_common_description import generate_configuration_file
 from romea_common_description import DeviceConfiguration as Device
 from ament_index_python.packages import get_package_share_directory
 
@@ -97,8 +98,8 @@ def get_imu_complete_configuration(imu_name, imu_description):
     imu = Device(imu_name, specifications, imu_description, specifications_units)
 
     configuration = {}
-    configuration['rate'] = imu.get('rate')
     configuration['type'] = imu.get('type')
+    configuration['rate'] = imu.get('rate')
 
     configuration['acceleration_noise_density'] = imu.get('acceleration_noise_density')
     configuration['acceleration_bias_stability_std'] = imu.get('acceleration_bias_stability_std')
@@ -119,12 +120,12 @@ def get_imu_complete_configuration(imu_name, imu_description):
 
 def urdf(prefix, mode, imu_name, imu_description, imu_location, ros_namespace):
 
+    units = get_imu_specification_units()
     configuration = get_imu_complete_configuration(imu_name, imu_description)
-
     configuration_yaml_file = f'/tmp/{prefix}{imu_name}_urdf_configuration.yaml'
 
     with open(configuration_yaml_file, 'w') as f:
-        yaml.dump({**configuration, **imu_location}, f)
+        f.write(generate_configuration_file({**configuration, **imu_location}, units, False))
 
     geometry_yaml_file = get_imu_geometry_file_path(
         imu_description["manufacturer"], imu_description["model"]
