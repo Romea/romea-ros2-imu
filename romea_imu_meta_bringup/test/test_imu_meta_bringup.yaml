@@ -1,13 +1,14 @@
 name: imu
 namespace: ns
-launch_file:
-  imu_driver:
-    profile: xsens_driver_profile.yaml
-    configuration:
-      driver:
-        parameters:
-          device: "/dev/ttyUSB0"
-          baudrate: 115200
+launch:
+  - node:
+      pkg: romea_imu_meta_bringup
+      profile: config/xsens_driver.profile.yaml
+      param:
+        - name: device
+          value: "/dev/ttyUSB0"
+        - name: baudrate
+          value: 115200
 configuration:
   manufacturer: xsens
   model: mti

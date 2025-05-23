@@ -15,7 +15,7 @@
 # limitations under the License.
 
 
-from romea_imu_meta_bringup import urdf_description
+from romea_imu_meta_bringup import IMUMetaDescription, generate_launch_file
 import sys
 
 if __name__ == "__main__":
@@ -30,4 +30,5 @@ if __name__ == "__main__":
     mode = parameters["mode"]
     robot_namespace = parameters["robot_namespace"]
     meta_description_file_path = parameters["meta_description_file_path"]
-    print(urdf_description(robot_namespace, mode, meta_description_file_path))
+    meta_description = IMUMetaDescription(meta_description_file_path, robot_namespace)
+    print(generate_launch_file(mode, meta_description))

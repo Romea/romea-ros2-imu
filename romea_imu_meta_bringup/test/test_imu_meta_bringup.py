@@ -37,8 +37,8 @@ def test_get_namespace(meta_description):
     assert meta_description.get_namespace() == "ns"
 
 
-def test_get_launch_file_configuration(meta_description):
-    assert "imu_driver" in meta_description.get_launch_file_configuration()
+def test_get_launch_file(meta_description):
+    assert meta_description.get_launch_file() is not None
 
 
 def test_get_manufacturer(meta_description):

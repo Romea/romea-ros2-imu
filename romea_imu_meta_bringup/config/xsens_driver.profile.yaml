@@ -1,0 +1,31 @@
+pkg: xsens_driver
+exec: mtnode.py
+name: driver
+param:
+  - name: device
+    value:
+      source:
+        from: node_configuration
+        param: device
+  - name: baudrate
+    value:
+      source:
+        from: node_configuration
+        param: baudrate
+  - name: initial_wait
+    value: 1.0
+  - name: timeout
+    value: 0.01
+  - name: angular_velocity_covariance_diagonal
+    value: [0.0, 0.0, 0.0]
+  - name: linear_acceleration_covariance_diagonal
+    value: [0.0, 0.0, 0.0]
+  - name: orientation_covariance_diagonal
+    value: [0.0, 0.0, 0.0]
+remap:
+  - from: imu/data
+    to: data
+  - from: imu/data_str
+    to: data_str
+  - from: imu/mag
+    to: mag

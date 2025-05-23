@@ -1,0 +1,48 @@
+pkg: bluespace_ai_xsens_mti_driver
+exec: xsens_mti_node
+name: driver
+param:
+  - name: port
+    value:
+      source:
+        from: node_configuration
+        param: port
+  - name: baudrate
+    value:
+      source:
+        from: node_configuration
+        param: baudrate
+  - name: scan_for_devices
+    value: false
+  - name: pub_imu
+    value: true
+  - name: pub_quaternion
+    value: false
+  - name: pub_mag
+    value: false
+  - name: pub_angular_velocity
+    value: false
+  - name: pub_acceleration
+    value: false
+  - name: pub_free_acceleration
+    value: false
+  - name: pub_dq
+    value: false
+  - name: pub_dv
+    value: false
+  - name: pub_sampletime
+    value: false
+  - name: pub_temperature
+    value: false
+  - name: pub_pressure
+    value: false
+  - name: pub_gnss
+    value: false
+  - name: pub_twist
+    value: false
+  - name: pub_transform
+    value: false
+  - name: pub_positionLLA
+    value: false
+  - name: pub_velocity
+    value: false

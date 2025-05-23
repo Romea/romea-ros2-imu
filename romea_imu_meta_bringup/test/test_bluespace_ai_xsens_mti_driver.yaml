@@ -1,0 +1,14 @@
+name: imu
+launch:
+  - node:
+      pkg: romea_imu_meta_bringup
+      profile: config/bluespace_ai_xsens_mti_driver.profile.yaml
+      param:
+        - name: port
+          value: "/dev/ttyUSB0"
+        - name: baudrate
+          value: 115200
+configuration:
+  manufacturer: xsens
+  model: mti
+  rate: 100
