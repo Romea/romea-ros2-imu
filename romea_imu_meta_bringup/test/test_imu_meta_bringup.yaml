@@ -1,14 +1,13 @@
 name: imu
 namespace: ns
 launch:
-  - node:
-      pkg: romea_imu_meta_bringup
-      profile: config/xsens_driver.profile.yaml
-      param:
+  - include:
+      file: "$(find-pkg-share romea_imu_meta_bringup)/profile/xsens_driver.launch.py"
+      arg:
         - name: device
-          value: "/dev/ttyUSB0"
+          value: /dev/ttyUSB0
         - name: baudrate
-          value: 115200
+          value: "115200"
 configuration:
   manufacturer: xsens
   model: mti

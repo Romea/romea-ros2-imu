@@ -54,11 +54,10 @@ def generate_configuration_file(meta_description, extended):
     return romea_common_description.generate_configuration_file(configuration, units, extended)
 
 
-def generate_launch_file(mode, meta_description):
+def generate_launch_file(meta_description):
     imu_configuration = get_complete_sensor_configuration(meta_description)
     imu_configuration["frame_id"] = meta_description.get_link()
-    return LaunchFileGenerator("gps").generate(
-        mode,
+    return LaunchFileGenerator("imu").generate(
         meta_description.get_launch_file(),
         imu_configuration,
         meta_description.get_robot_name(),
