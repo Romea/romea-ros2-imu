@@ -2,7 +2,7 @@
 
 # 1) Overview #
 
-The romea_imu_bringup package provides  : 
+The romea_imu_meta_bringup package provides  : 
 
  - **Launch files** able to launch ros2 IMU drivers according a meta-description file provided by user (see next section for IMU meta-description file overview), supported drivers are:
 
@@ -12,7 +12,7 @@ The romea_imu_bringup package provides  :
    You can launch a driver using the following command: 
 
     ```console
-    ros2 launch romea_imu_bringup imu.launch.py mode:=live robot_namespace:=robot meta_description_file_path:=/path_to_file/meta_description_file.yaml
+    ros2 launch romea_imu_meta_bringup imu.launch.py mode:=live robot_namespace:=robot meta_description_file_path:=/path_to_file/meta_description_file.yaml
     ```
 
    where:
@@ -25,7 +25,7 @@ The romea_imu_bringup package provides  :
  - A **ROS2 python executable** able to create IMU URDF description via command line according a given meta-description file:
 
   ```console
-  ros2 run romea_imu_bringup urdf_description.py robot_namespace:robot meta_description_file_path:/path_to_file/meta_description_file.yaml > imu.urdf`
+  ros2 run romea_imu_meta_bringup urdf_description.py robot_namespace:robot meta_description_file_path:/path_to_file/meta_description_file.yaml > imu.urdf`
   ```
 
    where:

@@ -13,7 +13,6 @@
   <buildtool_depend>ament_cmake_python</buildtool_depend>
 
   <depend>romea_common_meta_bringup</depend>
-  <depend>romea_imu_bringup</depend>
   <depend>romea_imu_description</depend>
 
   <test_depend>ament_lint_auto</test_depend>

@@ -11,7 +11,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>romea_imu_bringup</exec_depend>
+  <exec_depend>romea_imu_meta_bringup</exec_depend>
   <exec_depend>romea_imu_description</exec_depend>
   <!--  <exec_depend>romea_nmea_gps_driver</exec_depend>-->
   <!--  <exec_depend>romea_imu_gazebo</exec_depend>-->
