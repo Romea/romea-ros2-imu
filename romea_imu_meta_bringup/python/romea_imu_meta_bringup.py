@@ -61,20 +61,17 @@ def generate_configuration_file(meta_description, extended):
 
 
 def generate_launch_file(meta_description):
-    imu_configuration = get_complete_sensor_configuration(meta_description)
-    imu_configuration["manufacturer"] = meta_description.get_manufacturer()
-    imu_configuration["model"] = meta_description.get_model()
-    imu_configuration["version"] = meta_description.get_model()
-    imu_configuration["tf_prefix"] = meta_description.get_urdf_prefix()
-    imu_configuration["frame_id"] = meta_description.get_link()
     launch_arguments = [{"name": "mode", "default": "live"}]
+    namespaces = [meta_description.get_robot_name(), meta_description.get_name()]
+    configuration = get_complete_sensor_configuration(meta_description)
+    configuration["manufacturer"] = meta_description.get_manufacturer()
+    configuration["model"] = meta_description.get_model()
+    configuration["version"] = meta_description.get_model()
+    configuration["tf_prefix"] = meta_description.get_urdf_prefix()
+    configuration["frame_id"] = meta_description.get_link()
 
     return LaunchFileGenerator("imu").generate(
-        meta_description.get_launch_file(),
-        launch_arguments,
-        imu_configuration,
-        meta_description.get_robot_name(),
-        meta_description.get_name(),
+        meta_description.get_launch_file(), launch_arguments, namespaces, configuration
     )
 
 
