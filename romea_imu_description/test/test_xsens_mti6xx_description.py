@@ -25,32 +25,33 @@ from romea_imu_description import (
 
 def test_get_imu_specifications_file_path_ok():
     assert (
-        get_imu_specifications_file_path("xsens", "mti630")
+        get_imu_specifications_file_path("xsens", "mti", "630")
         == get_package_share_directory("romea_imu_description")
-        + "/config/xsens_mti6xx_specifications.yaml"
+        + "/config/xsens_mti_6xx_specifications.yaml"
     )
 
 
 def test_get_imu_specifications_ok():
-    assert get_imu_specifications("xsens", "mti630")['angular_speed_noise_density'] == 0.007
+    assert get_imu_specifications("xsens", "mti", "630")['angular_speed_noise_density'] == 0.007
 
 
 def test_get_imu_geometry_file_path_ok():
     assert (
-        get_imu_geometry_file_path("xsens", "mti630")
+        get_imu_geometry_file_path("xsens", "mti", "630")
         == get_package_share_directory("romea_imu_description")
-        + "/config/xsens_mti6xx_geometry.yaml"
+        + "/config/xsens_mti_6xx_geometry.yaml"
     )
 
 
 def test_get_imu_geometry_ok():
-    assert get_imu_geometry("xsens", "mti630")['mass'] == 0.075
+    assert get_imu_geometry("xsens", "mti", "630")['mass'] == 0.075
 
 
-def test_get_gps_receiver_complete_configuration_ok():
+def test_get_imu_receiver_complete_configuration_ok():
     user_description = {
        "manufacturer": "xsens",
-       "model": "mti630",
+       "model": "mti",
+       "version": "630",
        "rate": 100
     }
 

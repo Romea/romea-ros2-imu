@@ -25,31 +25,35 @@ from romea_imu_description import (
 
 def test_get_imu_specifications_file_path_ok():
     assert (
-        get_imu_specifications_file_path("gladiator", "landmark40")
+        get_imu_specifications_file_path("gladiator", "landmark", "40")
         == get_package_share_directory("romea_imu_description")
-        + "/config/gladiator_landmarkx0_specifications.yaml"
+        + "/config/gladiator_landmark_x0_specifications.yaml"
     )
 
 
 def test_get_imu_specifications_ok():
-    specifications = get_imu_specifications("gladiator", "landmark40")
-    assert specifications["angular_speed_noise_density"]["dict"]["landmark40"][300] == 0.004
+    specifications = get_imu_specifications("gladiator", "landmark", "40")
+    assert specifications["angular_speed_noise_density"]["dict"]["40"][300] == 0.004
 
 
 def test_get_imu_geometry_file_path_ok():
     assert (
-        get_imu_geometry_file_path("gladiator", "landmark40")
+        get_imu_geometry_file_path("gladiator", "landmark", "40")
         == get_package_share_directory("romea_imu_description")
-        + "/config/gladiator_landmarkx0_geometry.yaml"
+        + "/config/gladiator_landmark_x0_geometry.yaml"
     )
 
 
 def test_get_imu_geometry_ok():
-    assert get_imu_geometry("gladiator", "landmark40")["mass"] == 0.113
+    assert get_imu_geometry("gladiator", "landmark", "40")["mass"] == 0.113
 
 
-def test_get_gps_receiver_complete_configuration_ok():
-    user_description = {"manufacturer": "gladiator", "model": "landmark40", "rate": 100}
+def test_get_imu_receiver_complete_configuration_ok():
+    user_description = {
+        "manufacturer": "gladiator",
+        "model": "landmark",
+        "version": "40",
+        "rate": 100}
 
     configuration = get_imu_complete_configuration("imu", user_description)
 

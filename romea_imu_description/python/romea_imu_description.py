@@ -15,65 +15,42 @@
 
 import xacro
 import yaml
+from romea_common_description import get_configuration_file
 from romea_common_description import generate_configuration_file
 from romea_common_description import DeviceConfiguration as Device
 from ament_index_python.packages import get_package_share_directory
 
 
-def get_xsens_model_family(model):
-    if 'mti' == model:
-        return 'mti'
-    elif 'mti6' in model:
-        return 'mti6xx'
-
-    raise RuntimeError(
-        f'Xsens {model} IMU is not supported by romea_imu_description package. '
-        'Please check your configuration or contribute to support this sensor.'
+def get_imu_configuration_file_path(manufacturer, model, version, what):
+    package = get_package_share_directory('romea_imu_description')
+    configuration_file_path = get_configuration_file(
+        f"{package}/config", f"{manufacturer}_{model}_{version}_{what}.yaml"
     )
 
-
-def get_gladiator_model_family(model):
-    if 'landmark' in model:
-        if model.replace("landmark", "") == "40":
-            return "landmarkx0"
-
-    raise RuntimeError(
-        f'Gladiator {model} IMU is not supported by romea_imu_description package. '
-        'Please check your configuration or contribute to support this sensor.'
-    )
-
-
-def get_imu_family(manufacturer, model):
-    if manufacturer == 'xsens':
-        return get_xsens_model_family(model)
-    elif manufacturer == 'gladiator':
-        return get_gladiator_model_family(model)
-    else:
+    if not configuration_file_path:
         raise RuntimeError(
-            f"No '{manufacturer}' IMU is supported by romea_imu_description package. "
+            f"No {manufacturer} {model} {version} IMU is supported by {package} package. "
             'Please check your configuration or contribute to support this kind of sensor.'
         )
 
-
-def get_imu_specifications_file_path(manufacturer, model):
-    family = get_imu_family(manufacturer, model)
-    pkg_path = get_package_share_directory('romea_imu_description')
-    return f'{pkg_path}/config/{manufacturer}_{family}_specifications.yaml'
+    return configuration_file_path
 
 
-def get_imu_specifications(manufacturer, model):
-    with open(get_imu_specifications_file_path(manufacturer, model)) as f:
+def get_imu_specifications_file_path(manufacturer, model, version):
+    return get_imu_configuration_file_path(manufacturer, model, version, "specifications")
+
+
+def get_imu_specifications(manufacturer, model, version):
+    with open(get_imu_specifications_file_path(manufacturer, model, version)) as f:
         return yaml.safe_load(f)
 
 
-def get_imu_geometry_file_path(manufacturer, model):
-    family = get_imu_family(manufacturer, model)
-    pkg_path = get_package_share_directory('romea_imu_description')
-    return f'{pkg_path}/config/{manufacturer}_{family}_geometry.yaml'
+def get_imu_geometry_file_path(manufacturer, model, version):
+    return get_imu_configuration_file_path(manufacturer, model, version, "geometry")
 
 
-def get_imu_geometry(manufacturer, model):
-    with open(get_imu_geometry_file_path(manufacturer, model)) as f:
+def get_imu_geometry(manufacturer, model, version):
+    with open(get_imu_geometry_file_path(manufacturer, model, version)) as f:
         return yaml.safe_load(f)
 
 
@@ -90,9 +67,10 @@ def get_imu_specification_units():
 def get_imu_complete_configuration(imu_name, imu_description):
 
     model = imu_description["model"]
+    version = imu_description["version"]
     manufacturer = imu_description["manufacturer"]
-    imu_name = f'{manufacturer} {model} imu called {imu_name}'
-    specifications = get_imu_specifications(manufacturer, model)
+    imu_name = f'{manufacturer} {model} {version} imu called {imu_name}'
+    specifications = get_imu_specifications(manufacturer, model, version)
     specifications_units = get_imu_specification_units()
 
     imu = Device(imu_name, specifications, imu_description, specifications_units)
@@ -128,7 +106,7 @@ def urdf(prefix, mode, imu_name, imu_description, imu_location, ros_namespace):
         f.write(generate_configuration_file({**configuration, **imu_location}, units, False))
 
     geometry_yaml_file = get_imu_geometry_file_path(
-        imu_description["manufacturer"], imu_description["model"]
+        imu_description["manufacturer"], imu_description["model"], imu_description["version"]
     )
 
     xacro_file = get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"

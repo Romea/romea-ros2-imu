@@ -2,36 +2,36 @@
 type:
   default: AHRS
   list: [IMU, VRU, AHRS]
-model:
-  list: [landmark10, landmark20, landmark30, landmark40]
+version:
+  list: ["10", "20", "30", "40"]
 rate:
   default: 100
   list: [10, 100]
 acceleration_noise_density:
-  depend: [model, acceleration_range]
+  depend: [version, acceleration_range]
   dict:
-    landmark40:
+    "40":
       19.62: 0.39240e-03 # m/s^2/√Hz
       98.1: 1.1772e-03 # m/s^2/√Hz
 acceleration_bias_stability_std:
-  depend: [model, acceleration_range]
+  depend: [version, acceleration_range]
   dict:
-    landmark40:
+    "40":
       19.62: 0.19620e-03 # m/s^2
       98.1: 0.7848e-03 # m/s^2/√Hz
 acceleration_range:
   default: 98.1
   list: [19.62, 98.1] #m/s^2
 angular_speed_noise_density:
-  depend: [model, angular_speed_range]
+  depend: [version, angular_speed_range]
   dict:
-    landmark40:
+    "40":
       100: 0.002 #deg/s/√Hz
       300: 0.004 #deg/s/√Hz
 angular_speed_bias_stability_std:
-  depend: model
+  depend: version
   dict:
-    landmark40: 6 #deg/h
+    "40": 6 #deg/h
 angular_speed_range:
   default: 300
   list: [100 300] #deg/s

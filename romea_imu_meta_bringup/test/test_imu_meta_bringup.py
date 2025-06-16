@@ -49,6 +49,10 @@ def test_get_model(meta_description):
     assert meta_description.get_model() == "mti"
 
 
+def test_get_version(meta_description):
+    assert meta_description.get_version() == ""
+
+
 def test_get_rate(meta_description):
     assert meta_description.get_rate() == 100
 

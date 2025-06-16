@@ -26,25 +26,31 @@ class IMUMetaDescription(SensorMetaDescription):
         return self._get_or("rate", "configuration", None)
 
 
-def load_meta_description(meta_description_file_path):
-    return IMUMetaDescription(meta_description_file_path)
+def load_meta_description(meta_description_file_path, robot_name=None):
+    return IMUMetaDescription(meta_description_file_path, robot_name)
 
 
 def get_sensor_specifications(meta_description):
     return romea_imu_description.get_imu_specifications(
-        meta_description.get_manufacturer(), meta_description.get_model()
+        meta_description.get_manufacturer(),
+        meta_description.get_model(),
+        meta_description.get_version()
     )
 
 
 def get_sensor_geometry(meta_description):
     return romea_imu_description.get_imu_geometry(
-        meta_description.get_manufacturer(), meta_description.get_model()
+        meta_description.get_manufacturer(),
+        meta_description.get_model(),
+        meta_description.get_version()
     )
 
 
 def get_complete_sensor_configuration(meta_description):
+    print("launch configuration", meta_description.get_configuration())
     return romea_imu_description.get_imu_complete_configuration(
-        meta_description.get_name(), meta_description.get_configuration()
+        meta_description.get_name(),
+        meta_description.get_configuration()
     )
 
 
@@ -56,9 +62,16 @@ def generate_configuration_file(meta_description, extended):
 
 def generate_launch_file(meta_description):
     imu_configuration = get_complete_sensor_configuration(meta_description)
+    imu_configuration["manufacturer"] = meta_description.get_manufacturer()
+    imu_configuration["model"] = meta_description.get_model()
+    imu_configuration["version"] = meta_description.get_model()
+    imu_configuration["tf_prefix"] = meta_description.get_urdf_prefix()
     imu_configuration["frame_id"] = meta_description.get_link()
+    launch_arguments = [{"name": "mode", "default": "live"}]
+
     return LaunchFileGenerator("imu").generate(
         meta_description.get_launch_file(),
+        launch_arguments,
         imu_configuration,
         meta_description.get_robot_name(),
         meta_description.get_name(),

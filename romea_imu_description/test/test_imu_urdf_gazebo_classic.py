@@ -27,6 +27,7 @@ def urdf_xml():
     description = {
         "manufacturer": "xsens",
         "model": "mti",
+        "version": "",
         "rate": 100,
     }
 
