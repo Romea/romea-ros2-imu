@@ -22,38 +22,45 @@ from romea_imu_description import (
     get_imu_specifications,
 )
 
+import pytest
 
-def test_get_imu_specifications_file_path_ok():
+
+@pytest.fixture(scope="module")
+def user_description():
+
+    return {
+        "manufacturer": "xsens",
+        "model": "mti",
+        "version": "",
+        "rate": 100
+    }
+
+
+def test_get_imu_specifications_file_path_ok(user_description):
     assert (
-        get_imu_specifications_file_path("xsens", "mti", "")
+        get_imu_specifications_file_path(user_description)
         == get_package_share_directory("romea_imu_description")
         + "/config/xsens_mti__specifications.yaml"
     )
 
 
-def test_get_imu_specifications_ok():
-    assert get_imu_specifications("xsens", "mti", "")['angular_speed_noise_density'] == 0.05
+def test_get_imu_specifications_ok(user_description):
+    assert get_imu_specifications(user_description)['angular_speed_noise_density'] == 0.05
 
 
-def test_get_imu_geometry_file_path_ok():
+def test_get_imu_geometry_file_path_ok(user_description):
     assert (
-        get_imu_geometry_file_path("xsens", "mti", "")
+        get_imu_geometry_file_path(user_description)
         == get_package_share_directory("romea_imu_description")
         + "/config/xsens_mti__geometry.yaml"
     )
 
 
-def test_get_imu_geometry_ok():
-    assert get_imu_geometry("xsens", "mti", "")['mass'] == 0.050
+def test_get_imu_geometry_ok(user_description):
+    assert get_imu_geometry(user_description)['mass'] == 0.050
 
 
-def test_get_gps_receiver_complete_configuration_ok():
-    user_description = {
-       "manufacturer": "xsens",
-       "model": "mti",
-       "version": "",
-       "rate": 100
-    }
+def test_get_gps_receiver_complete_configuration_ok(user_description):
 
     configuration = get_imu_complete_configuration("imu", user_description)
 

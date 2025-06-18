@@ -15,42 +15,28 @@
 
 import xacro
 import yaml
-from romea_common_description import get_configuration_file
+from romea_common_description import get_geometry_file_path
+from romea_common_description import get_specifications_file_path
 from romea_common_description import generate_configuration_file
 from romea_common_description import DeviceConfiguration as Device
 from ament_index_python.packages import get_package_share_directory
 
 
-def get_imu_configuration_file_path(manufacturer, model, version, what):
-    package = get_package_share_directory('romea_imu_description')
-    configuration_file_path = get_configuration_file(
-        f"{package}/config", f"{manufacturer}_{model}_{version}_{what}.yaml"
-    )
-
-    if not configuration_file_path:
-        raise RuntimeError(
-            f"No {manufacturer} {model} {version} IMU is supported by {package} package. "
-            'Please check your configuration or contribute to support this kind of sensor.'
-        )
-
-    return configuration_file_path
+def get_imu_specifications_file_path(imu_description):
+    return get_specifications_file_path("romea_imu_description", imu_description)
 
 
-def get_imu_specifications_file_path(manufacturer, model, version):
-    return get_imu_configuration_file_path(manufacturer, model, version, "specifications")
-
-
-def get_imu_specifications(manufacturer, model, version):
-    with open(get_imu_specifications_file_path(manufacturer, model, version)) as f:
+def get_imu_specifications(imu_description):
+    with open(get_imu_specifications_file_path(imu_description)) as f:
         return yaml.safe_load(f)
 
 
-def get_imu_geometry_file_path(manufacturer, model, version):
-    return get_imu_configuration_file_path(manufacturer, model, version, "geometry")
+def get_imu_geometry_file_path(imu_description):
+    return get_geometry_file_path("romea_imu_description", imu_description)
 
 
-def get_imu_geometry(manufacturer, model, version):
-    with open(get_imu_geometry_file_path(manufacturer, model, version)) as f:
+def get_imu_geometry(imu_description):
+    with open(get_imu_geometry_file_path(imu_description)) as f:
         return yaml.safe_load(f)
 
 
@@ -70,23 +56,23 @@ def get_imu_complete_configuration(imu_name, imu_description):
     version = imu_description["version"]
     manufacturer = imu_description["manufacturer"]
     imu_name = f'{manufacturer} {model} {version} imu called {imu_name}'
-    specifications = get_imu_specifications(manufacturer, model, version)
+    specifications = get_imu_specifications(imu_description)
     specifications_units = get_imu_specification_units()
 
     imu = Device(imu_name, specifications, imu_description, specifications_units)
 
     configuration = {}
+    configuration["model"] = imu_description["model"]
+    configuration["version"] = imu_description["version"]
+    configuration["manufacturer"] = imu_description["manufacturer"]
     configuration['type'] = imu.get('type')
     configuration['rate'] = imu.get('rate')
-
     configuration['acceleration_noise_density'] = imu.get('acceleration_noise_density')
     configuration['acceleration_bias_stability_std'] = imu.get('acceleration_bias_stability_std')
     configuration['acceleration_range'] = imu.get('acceleration_range')
-
     configuration['angular_speed_noise_density'] = imu.get('angular_speed_noise_density')
     configuration['angular_speed_bias_stability_std'] = imu.get('angular_speed_bias_stability_std')
     configuration['angular_speed_range'] = imu.get('angular_speed_range')
-
     if configuration['type'] == "AHRS":
         configuration['magnetic_noise_density'] = imu.get('magnetic_noise_density')
         configuration['magnetic_bias_stability_std'] = imu.get('magnetic_bias_stability_std')
@@ -105,9 +91,7 @@ def urdf(prefix, mode, imu_name, imu_description, imu_location, ros_namespace):
     with open(configuration_yaml_file, 'w') as f:
         f.write(generate_configuration_file({**configuration, **imu_location}, units, False))
 
-    geometry_yaml_file = get_imu_geometry_file_path(
-        imu_description["manufacturer"], imu_description["model"], imu_description["version"]
-    )
+    geometry_yaml_file = get_imu_geometry_file_path(imu_description)
 
     xacro_file = get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
 
