@@ -20,7 +20,6 @@ from launch_ros.actions import Node, LoadComposableNodes
 from launch.substitutions import LaunchConfiguration
 from launch_ros.descriptions import ComposableNode
 
-from romea_common_meta_bringup import robot_namespace
 
 class LaunchVariables():
     def __init__(self, context):
@@ -32,28 +31,30 @@ class LaunchVariables():
 
 def launch_setup(context, *args, **kwargs):
 
-    variables = LaunchVariables(context)
+    vars = LaunchVariables(context)
 
-    mode = variables.get("mode")
-    container = variables.get("container")
-    restamping = variables.get("restamping")
-    odom_topic = variables.get("odom_topic")
+    mode = vars.get("mode")
+    container = vars.get("container")
+    restamping = vars.get("restamping")
+    odom_topic = vars.get("odom_topic")
 
     # print(context.launch_configurations)
 
-    rate = variables.get("rate")
-    acceleration_noise_density = variables.get("acceleration_noise_density")
-    acceleration_bias_stability_std = variables.get("acceleration_bias_stability_std")
-    acceleration_range = variables.get("acceleration_range")
-    angular_speed_noise_density = variables.get("angular_speed_noise_density")
-    angular_speed_bias_stability_std = variables.get("angular_speed_bias_stability_std")
-    angular_speed_range = variables.get("angular_speed_range")
-    magnetic_noise_density = variables.get("magnetic_noise_density")
-    magnetic_bias_stability_std = variables.get("magnetic_bias_stability_std")
-    magnetic_range = variables.get("magnetic_range")
-    heading_std = variables.get("heading_std")
-    xyz = variables.get("xyz")[1:-1].split(",")
-    rpy = variables.get("rpy")[1:-1].split(",")
+    imu_configuration = {
+        "rate": float(vars.get("rate")),
+        "acceleration_noise_density": float(vars.get("acceleration_noise_density")),
+        "acceleration_bias_stability_std": float(vars.get("acceleration_bias_stability_std")),
+        "acceleration_range": float(vars.get("acceleration_range")),
+        "angular_speed_noise_density": float(vars.get("angular_speed_noise_density")),
+        "angular_speed_bias_stability_std": float(vars.get("angular_speed_bias_stability_std")),
+        "angular_speed_range": float(vars.get("angular_speed_range")),
+        "magnetic_noise_density": float(vars.get("magnetic_noise_density")),
+        "magnetic_bias_stability_std": float(vars.get("magnetic_bias_stability_std")),
+        "magnetic_range": float(vars.get("magnetic_range")),
+        "heading_std": float(vars.get("heading_std")),
+        "xyz": [float(v) for v in vars.get("xyz")[1:-1].split(",")],
+        "rpy": [float(v) for v in vars.get("rpy")[1:-1].split(",")],
+    }
 
     common_arguments = {
         "package": "romea_localisation_imu_plugin",
@@ -62,22 +63,7 @@ def launch_setup(context, *args, **kwargs):
             {
                 "restamping": bool(restamping),
                 "enable_accelerations": "live" in mode,
-                "imu":
-                    {
-                      "rate": float(rate),
-                      "acceleration_noise_density": float(acceleration_noise_density),
-                      "acceleration_bias_stability_std": float(acceleration_bias_stability_std),
-                      "acceleration_range": float(acceleration_range),
-                      "angular_speed_noise_density": float(angular_speed_noise_density),
-                      "angular_speed_bias_stability_std": float(angular_speed_bias_stability_std),
-                      "angular_speed_range": float(angular_speed_range),
-                      "magnetic_noise_density": float(magnetic_noise_density),
-                      "magnetic_bias_stability_std": float(magnetic_bias_stability_std),
-                      "magnetic_range": float(magnetic_range),
-                      "heading_std": float(heading_std),
-                      "xyz":  [float(v) for v in xyz],
-                      "rpy":  [float(v) for v in rpy],
-                    },
+                "imu": imu_configuration
             }
         ],
         "remappings": [
