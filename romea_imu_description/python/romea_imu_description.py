@@ -50,7 +50,7 @@ def get_imu_specification_units():
         return yaml.safe_load(f)
 
 
-def get_imu_complete_configuration(imu_name, imu_description):
+def get_imu_complete_configuration(imu_name, imu_description, imu_location):
 
     model = imu_description["model"]
     version = imu_description["version"]
@@ -79,17 +79,21 @@ def get_imu_complete_configuration(imu_name, imu_description):
         configuration['magnetic_range'] = imu.get('magnetic_range')
         configuration['heading_std'] = imu.get('heading_std')
 
-    return configuration
+    return {**configuration, **imu_location}
+
+
+def generate_imu_configuration_file(configuration, extended):
+    units = get_imu_specification_units()
+    return generate_configuration_file(configuration, units, extended)
 
 
 def urdf(prefix, mode, imu_name, imu_description, imu_location, ros_namespace):
 
-    units = get_imu_specification_units()
-    configuration = get_imu_complete_configuration(imu_name, imu_description)
-    configuration_yaml_file = f'/tmp/{prefix}{imu_name}_urdf_configuration.yaml'
+    configuration = get_imu_complete_configuration(imu_name, imu_description, imu_location)
 
+    configuration_yaml_file = f'/tmp/{prefix}{imu_name}_configuration.yaml'
     with open(configuration_yaml_file, 'w') as f:
-        f.write(generate_configuration_file({**configuration, **imu_location}, units, False))
+        f.write(generate_imu_configuration_file(configuration, False))
 
     geometry_yaml_file = get_imu_geometry_file_path(imu_description)
 
