@@ -13,7 +13,6 @@
 # limitations under the License.
 
 # import yaml
-import romea_common_description
 import romea_imu_description
 from romea_common_meta_bringup import SensorMetaDescription, LaunchFileGenerator
 
