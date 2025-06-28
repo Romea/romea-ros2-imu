@@ -15,11 +15,11 @@
 from ament_index_python.packages import get_package_share_directory
 
 from romea_imu_description import (
-    get_imu_complete_configuration,
-    get_imu_geometry_file_path,
-    get_imu_geometry,
-    get_imu_specifications_file_path,
-    get_imu_specifications,
+    get_complete_configuration,
+    get_geometry_file_path,
+    get_geometry,
+    get_specifications_file_path,
+    get_specifications,
 )
 
 import pytest
@@ -36,33 +36,33 @@ def user_description():
     }
 
 
-def test_get_imu_specifications_file_path_ok(user_description):
+def test_get_specifications_file_path_ok(user_description):
     assert (
-        get_imu_specifications_file_path(user_description)
+        get_specifications_file_path(user_description)
         == get_package_share_directory("romea_imu_description")
         + "/config/xsens_mti__specifications.yaml"
     )
 
 
-def test_get_imu_specifications_ok(user_description):
-    assert get_imu_specifications(user_description)['angular_speed_noise_density'] == 0.05
+def test_get_specifications_ok(user_description):
+    assert get_specifications(user_description)['angular_speed_noise_density'] == 0.05
 
 
-def test_get_imu_geometry_file_path_ok(user_description):
+def test_get_geometry_file_path_ok(user_description):
     assert (
-        get_imu_geometry_file_path(user_description)
+        get_geometry_file_path(user_description)
         == get_package_share_directory("romea_imu_description")
         + "/config/xsens_mti__geometry.yaml"
     )
 
 
-def test_get_imu_geometry_ok(user_description):
-    assert get_imu_geometry(user_description)['mass'] == 0.050
+def test_get_geometry_ok(user_description):
+    assert get_geometry(user_description)['mass'] == 0.050
 
 
-def test_get_gps_receiver_complete_configuration_ok(user_description):
+def test_get_complete_configuration_ok(user_description):
 
-    configuration = get_imu_complete_configuration("imu", user_description)
+    configuration = get_complete_configuration("imu", user_description, {})
 
     assert configuration["type"] == "AHRS"
     assert configuration["acceleration_noise_density"] == 0.0005

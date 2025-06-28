@@ -17,9 +17,9 @@ import os
 import pytest
 from romea_imu_meta_bringup import (
     IMUMetaDescription,
-    get_sensor_specifications,
-    get_sensor_geometry,
-    get_complete_sensor_configuration
+    get_specifications,
+    get_geometry,
+    get_complete_configuration
 )
 
 
@@ -74,16 +74,16 @@ def test_get_records(meta_description):
     assert records["data"] is True
 
 
-def test_get_sensor_specifications(meta_description):
-    imu_specifactions = get_sensor_specifications(meta_description)
+def test_get_specifications(meta_description):
+    imu_specifactions = get_specifications(meta_description)
     assert imu_specifactions['acceleration_noise_density'] == 0.0005
 
 
-def test_get_sensor_geometry(meta_description):
-    imu_geometry = get_sensor_geometry(meta_description)
+def test_get_geometry(meta_description):
+    imu_geometry = get_geometry(meta_description)
     assert imu_geometry['mass'] == 0.050
 
 
-def test_get_complete_sensor_configuration(meta_description):
-    imu_configuration = get_complete_sensor_configuration(meta_description)
+def test_get_complete_configuration(meta_description):
+    imu_configuration = get_complete_configuration(meta_description)
     assert imu_configuration['acceleration_noise_density'] == 0.0005

@@ -15,51 +15,52 @@
 
 import xacro
 import yaml
-from romea_common_description import get_geometry_file_path
-from romea_common_description import get_specifications_file_path
-from romea_common_description import generate_configuration_file
-from romea_common_description import DeviceConfiguration as Device
+import romea_common_description
 from ament_index_python.packages import get_package_share_directory
 
 
-def get_imu_specifications_file_path(imu_description):
-    return get_specifications_file_path("romea_imu_description", imu_description)
+def get_specifications_file_path(imu_description):
+    return romea_common_description.get_specifications_file_path(
+        "romea_imu_description", imu_description)
 
 
-def get_imu_specifications(imu_description):
-    with open(get_imu_specifications_file_path(imu_description)) as f:
+def get_specifications(imu_description):
+    with open(get_specifications_file_path(imu_description)) as f:
         return yaml.safe_load(f)
 
 
-def get_imu_geometry_file_path(imu_description):
-    return get_geometry_file_path("romea_imu_description", imu_description)
+def get_geometry_file_path(imu_description):
+    return romea_common_description.get_geometry_file_path(
+        "romea_imu_description", imu_description)
 
 
-def get_imu_geometry(imu_description):
-    with open(get_imu_geometry_file_path(imu_description)) as f:
+def get_geometry(imu_description):
+    with open(get_geometry_file_path(imu_description)) as f:
         return yaml.safe_load(f)
 
 
-def get_imu_specification_units_file_path():
+def get_specification_units_file_path():
     pkg_path = get_package_share_directory('romea_imu_description')
     return f'{pkg_path}/config/specifications_units.yaml'
 
 
-def get_imu_specification_units():
-    with open(get_imu_specification_units_file_path()) as f:
+def get_specification_units():
+    with open(get_specification_units_file_path()) as f:
         return yaml.safe_load(f)
 
 
-def get_imu_complete_configuration(imu_name, imu_description, imu_location):
+def get_complete_configuration(imu_name, imu_description, imu_location):
 
     model = imu_description["model"]
     version = imu_description["version"]
     manufacturer = imu_description["manufacturer"]
     imu_name = f'{manufacturer} {model} {version} imu called {imu_name}'
-    specifications = get_imu_specifications(imu_description)
-    specifications_units = get_imu_specification_units()
+    specifications = get_specifications(imu_description)
+    specifications_units = get_specification_units()
 
-    imu = Device(imu_name, specifications, imu_description, specifications_units)
+    imu = romea_common_description.DeviceConfiguration(
+        imu_name, specifications, imu_description, specifications_units
+    )
 
     configuration = {}
     configuration["model"] = imu_description["model"]
@@ -82,20 +83,22 @@ def get_imu_complete_configuration(imu_name, imu_description, imu_location):
     return {**configuration, **imu_location}
 
 
-def generate_imu_configuration_file(configuration, extended):
-    units = get_imu_specification_units()
-    return generate_configuration_file(configuration, units, extended)
+def generate_configuration_file(configuration, extended):
+    units = get_specification_units()
+    return romea_common_description.generate_configuration_file(configuration, units, extended)
 
 
-def urdf(prefix, mode, imu_name, imu_description, imu_location, ros_namespace):
+def generate_urdf_description(
+        prefix, mode, imu_name, imu_description, imu_location, ros_namespace
+):
 
-    configuration = get_imu_complete_configuration(imu_name, imu_description, imu_location)
+    configuration = get_complete_configuration(imu_name, imu_description, imu_location)
 
     configuration_yaml_file = f'/tmp/{prefix}{imu_name}_configuration.yaml'
     with open(configuration_yaml_file, 'w') as f:
-        f.write(generate_imu_configuration_file(configuration, False))
+        f.write(generate_configuration_file(configuration, False))
 
-    geometry_yaml_file = get_imu_geometry_file_path(imu_description)
+    geometry_yaml_file = get_geometry_file_path(imu_description)
 
     xacro_file = get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
 

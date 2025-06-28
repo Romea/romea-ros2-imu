@@ -37,6 +37,7 @@ def launch_setup(context, *args, **kwargs):
     container = vars.get("container")
     restamping = vars.get("restamping")
     odom_topic = vars.get("odom_topic")
+    robot_namespace = vars.get("robot_namespace")
 
     # print(context.launch_configurations)
 
@@ -63,12 +64,16 @@ def launch_setup(context, *args, **kwargs):
             {
                 "restamping": bool(restamping),
                 "enable_accelerations": "live" in mode,
-                "imu": imu_configuration
+                "imu": imu_configuration,
+                "use_sim_time": "live" not in mode
             }
         ],
         "remappings": [
             ("imu/data", "data"),
-            ("vehicle_controller/odom", odom_topic)
+            ("vehicle_controller/odom", odom_topic),
+            ("attitude", f"/{robot_namespace}/localisation/attitude"),
+            ("angular_speed", f"/{robot_namespace}/localisation/angular_speed"),
+
         ]
     }
 
