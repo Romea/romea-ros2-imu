@@ -1,0 +1,15 @@
+# Bosch BMI088 – IMU 6 axes utilisée sur le Unitree B1
+acceleration_noise_density: 0.06 # m/s^2/√Hz ≈ 60 µg/√Hz
+acceleration_bias_stability_std: 0.02 # m/s^2    ≈ 2 mg typique
+acceleration_range: 156.96 # m/s^2 (correspond à ±16 g)
+
+angular_speed_noise_density: 0.00175 # rad/s/√Hz ≈ 0.1°/s/√Hz
+angular_speed_bias_stability_std: 0.0015 # rad/s     ≈ 0.086°/s
+angular_speed_range: 34.9 # rad/s     (correspond à ±2000°/s)
+
+# Le BMI088 ne possède PAS de magnétomètre
+magnetic_noise_density: 0.0 # T/√Hz
+magnetic_bias_stability_std: 0.0 # T
+magnetic_range: 0.0 # T
+
+heading_std: 0.05 # rad (hypothèse SLAM/VIO)
