@@ -16,15 +16,18 @@
 from launch import LaunchDescription
 
 from launch.actions import (
-    IncludeLaunchDescription,
     DeclareLaunchArgument,
+    IncludeLaunchDescription,
     OpaqueFunction,
 )
 
 from launch.launch_description_sources import AnyLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
-from romea_imu_meta_bringup import IMUMetaDescription, generate_launch_file
+from romea_imu_meta_bringup.meta_description import (
+    generate_launch_file,
+    IMUMetaDescription,
+)
 
 
 def get_mode(context):

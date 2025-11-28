@@ -14,9 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-from romea_imu_meta_bringup import IMUMetaDescription, generate_launch_file
 import sys
+
+from romea_imu_meta_bringup.meta_description import (
+    generate_launch_file,
+    IMUMetaDescription,
+)
 
 if __name__ == "__main__":
 

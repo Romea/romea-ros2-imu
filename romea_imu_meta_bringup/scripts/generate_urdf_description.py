@@ -14,9 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-from romea_imu_meta_bringup import IMUMetaDescription, generate_urdf_description
 import sys
+
+from romea_imu_meta_bringup.meta_description import (
+    generate_urdf_description,
+    IMUMetaDescription,
+)
 
 if __name__ == "__main__":
 

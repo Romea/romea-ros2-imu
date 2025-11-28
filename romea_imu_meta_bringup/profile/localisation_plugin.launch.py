@@ -16,8 +16,8 @@
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch_ros.actions import Node, LoadComposableNodes
 from launch.substitutions import LaunchConfiguration
+from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
 
 
@@ -31,30 +31,30 @@ class LaunchVariables():
 
 def launch_setup(context, *args, **kwargs):
 
-    vars = LaunchVariables(context)
+    var = LaunchVariables(context)
 
-    mode = vars.get("mode")
-    container = vars.get("container")
-    restamping = vars.get("restamping")
-    odom_topic = vars.get("odom_topic")
-    robot_namespace = vars.get("robot_namespace")
+    mode = var.get("mode")
+    container = var.get("container")
+    restamping = var.get("restamping")
+    odom_topic = var.get("odom_topic")
+    robot_namespace = var.get("robot_namespace")
 
     # print(context.launch_configurations)
 
     imu_configuration = {
-        "rate": float(vars.get("rate")),
-        "acceleration_noise_density": float(vars.get("acceleration_noise_density")),
-        "acceleration_bias_stability_std": float(vars.get("acceleration_bias_stability_std")),
-        "acceleration_range": float(vars.get("acceleration_range")),
-        "angular_speed_noise_density": float(vars.get("angular_speed_noise_density")),
-        "angular_speed_bias_stability_std": float(vars.get("angular_speed_bias_stability_std")),
-        "angular_speed_range": float(vars.get("angular_speed_range")),
-        "magnetic_noise_density": float(vars.get("magnetic_noise_density")),
-        "magnetic_bias_stability_std": float(vars.get("magnetic_bias_stability_std")),
-        "magnetic_range": float(vars.get("magnetic_range")),
-        "heading_std": float(vars.get("heading_std")),
-        "xyz": [float(v) for v in vars.get("xyz")[1:-1].split(",")],
-        "rpy": [float(v) for v in vars.get("rpy")[1:-1].split(",")],
+        "rate": float(var.get("rate")),
+        "acceleration_noise_density": float(var.get("acceleration_noise_density")),
+        "acceleration_bias_stability_std": float(var.get("acceleration_bias_stability_std")),
+        "acceleration_range": float(var.get("acceleration_range")),
+        "angular_speed_noise_density": float(var.get("angular_speed_noise_density")),
+        "angular_speed_bias_stability_std": float(var.get("angular_speed_bias_stability_std")),
+        "angular_speed_range": float(var.get("angular_speed_range")),
+        "magnetic_noise_density": float(var.get("magnetic_noise_density")),
+        "magnetic_bias_stability_std": float(var.get("magnetic_bias_stability_std")),
+        "magnetic_range": float(var.get("magnetic_range")),
+        "heading_std": float(var.get("heading_std")),
+        "xyz": [float(v) for v in var.get("xyz")[1:-1].split(",")],
+        "rpy": [float(v) for v in var.get("rpy")[1:-1].split(",")],
     }
 
     common_arguments = {

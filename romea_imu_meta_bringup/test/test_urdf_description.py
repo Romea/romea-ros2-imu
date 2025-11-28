@@ -13,12 +13,11 @@
 # limitations under the License.
 
 import os
-import pytest
 import subprocess
+import xml.etree.ElementTree as ET
 
 from ament_index_python import get_package_prefix
-
-import xml.etree.ElementTree as ET
+import pytest
 
 
 @pytest.fixture(scope="module")

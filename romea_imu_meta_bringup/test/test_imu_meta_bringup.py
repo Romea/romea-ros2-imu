@@ -14,12 +14,13 @@
 
 
 import os
+
 import pytest
-from romea_imu_meta_bringup import (
-    IMUMetaDescription,
-    get_specifications,
+from romea_imu_meta_bringup.meta_description import (
+    get_complete_configuration,
     get_geometry,
-    get_complete_configuration
+    get_specifications,
+    IMUMetaDescription,
 )
 
 
