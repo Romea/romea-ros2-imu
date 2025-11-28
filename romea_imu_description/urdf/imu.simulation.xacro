@@ -84,10 +84,16 @@
               <initial_orientation_as_reference>false</initial_orientation_as_reference>
             </plugin>
           </xacro:if>
-
+          <xacro:if value="${'classic' not in mode}">
+            <plugin filename="gz-sim-imu-system"
+              name="gz::sim::systems::Imu">
+            </plugin>
+          </xacro:if>
         </sensor>
       </gazebo>
     </xacro:if>
+
+
   </xacro:macro>
 
 </robot>

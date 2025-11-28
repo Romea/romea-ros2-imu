@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ament_index_python.packages import get_package_share_directory
+
+import romea_common_description
 
 import xacro
 import yaml
-import romea_common_description
-from ament_index_python.packages import get_package_share_directory
 
 
 def get_specifications_file_path(imu_description):
@@ -103,7 +104,7 @@ def generate_urdf_description(
     xacro_file = get_package_share_directory("romea_imu_description") + "/urdf/imu.xacro.urdf"
 
     if mode == "simulation":
-        mode += "_gazebo_classic"
+        mode += "_gazebo"
 
     urdf_xml = xacro.process_file(
         xacro_file,
