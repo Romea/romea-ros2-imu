@@ -3,4 +3,4 @@ include:
     file: ".gitlab-ci.yml"
 
 variables:
-  PKGS_TO_BUILD_TEST: "romea_imu_bringup romea_imu_description"
+  PKGS_TO_BUILD_TEST: "romea_imu_meta_bringup romea_imu_description"
