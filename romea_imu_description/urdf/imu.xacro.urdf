@@ -31,9 +31,4 @@
     mesh_visual="$(arg mesh_visual)"
     ros_namespace="$(arg ros_namespace)" />
 
-  <plugin filename="gz-sim-imu-system"
-    name="gz::sim::systems::Imu">
-  </plugin>
-
-
 </robot>

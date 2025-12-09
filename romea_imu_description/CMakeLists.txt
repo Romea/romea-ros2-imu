@@ -18,7 +18,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 
   find_package(ament_cmake_pytest REQUIRED)
-  ament_add_pytest_test(test_imu_urdf_gazebo_classic test/test_imu_urdf_gazebo_classic.py)
+  ament_add_pytest_test(test_imu_urdf_gazebo_classic test/test_imu_urdf.py)
   ament_add_pytest_test(test_xsens_mti_description test/test_xsens_mti_description.py)
   ament_add_pytest_test(test_xsens_mti6xx_description test/test_xsens_mti6xx_description.py)
   ament_add_pytest_test(test_gladiator_landmarkx0_description test/test_gladiator_landmarkx0_description.py)
