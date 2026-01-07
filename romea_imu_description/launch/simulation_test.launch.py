@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import xml.etree.ElementTree as ET
-
 from ament_index_python.packages import get_package_share_directory, get_packages_with_prefixes
 
 from launch import LaunchDescription
@@ -44,23 +42,20 @@ def launch_setup(context, *args, **kwargs):
         "rate": int(LaunchConfiguration("rate").perform(context)),
     }
 
+    print("description")
     print(description)
 
-    location = {
-        "parent_link": "base_link",
-        "xyz": [0.0, 0.0, 0.0],
-        "rpy": [0.0, 0.0, 1.0]
-    }
+    location = {"parent_link": "base_link", "xyz": [0.0, 0.0, 0.0], "rpy": [0.0, 0.0, 1.0]}
 
     ros_namespace = "robot/imu"
-    urdf_xml = ET.fromstring(
-        generate_urdf_description(prefix, mode, name, description, location, ros_namespace)
-    )
-    child = ET.SubElement(urdf_xml, "link")
-    child.set("name", "robot_base_link")
-
-    with open('/tmp/urdf', 'w') as file:
-        file.write(ET.tostring(urdf_xml, encoding='unicode'))
+    standalone = True
+    
+    with open("/tmp/urdf", "w") as file:
+        file.write(
+            generate_urdf_description(
+                prefix, mode, name, description, location, ros_namespace, standalone
+            )
+        )
 
     simulation = LaunchDescription()
 
@@ -68,8 +63,7 @@ def launch_setup(context, *args, **kwargs):
 
         gazebo = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                get_package_share_directory("gazebo_ros")
-                + "/launch/gazebo.launch.py"
+                get_package_share_directory("gazebo_ros") + "/launch/gazebo.launch.py"
             ),
         )
 
@@ -89,38 +83,32 @@ def launch_setup(context, *args, **kwargs):
 
         gazebo_gui = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                get_package_share_directory("ros_gz_sim")
-                + "/launch/gz_sim.launch.py"
+                get_package_share_directory("ros_gz_sim") + "/launch/gz_sim.launch.py"
             ),
-            launch_arguments={
-                'gz_args': '-g',
-                'on_exit_shutdown': 'True'
-            }.items()
+            launch_arguments={"gz_args": "-g", "on_exit_shutdown": "True"}.items(),
         )
 
         simulation.add_action(gazebo_gui)
 
         gazebo_server = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                get_package_share_directory("ros_gz_sim")
-                + "/launch/gz_server.launch.py"
+                get_package_share_directory("ros_gz_sim") + "/launch/gz_server.launch.py"
             ),
             launch_arguments={
-                'world_sdf_file': 'empty.sdf',
-                'world_sdf_string': 'world',
-            }.items()
+                "world_sdf_file": "/home/jean.laneurit/dev/romea_ros2_jazzy/src/tools/romea_simulation/romea_simulation_gazebo_worlds/worlds/gz_wgs84_empty.sdf",
+                "world_sdf_string": "world",
+            }.items(),
         )
 
         simulation.add_action(gazebo_server)
 
         spawn_imu = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                get_package_share_directory('ros_gz_sim')
-                + "/launch/gz_spawn_model.launch.py"
+                get_package_share_directory("ros_gz_sim") + "/launch/gz_spawn_model.launch.py"
             ),
             launch_arguments=[
-                ('file', '/tmp/urdf'),
-                ('entity_name', 'imu'),
+                ("file", "/tmp/urdf"),
+                ("entity_name", "imu"),
             ],
         )
 
@@ -148,6 +136,4 @@ def generate_launch_description():
         DeclareLaunchArgument("rate", default_value="100"),
     ]
 
-    return LaunchDescription(
-        declared_arguments + [OpaqueFunction(function=launch_setup)]
-    )
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

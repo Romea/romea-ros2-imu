@@ -90,7 +90,7 @@ def generate_configuration_file(configuration, extended):
 
 
 def generate_urdf_description(
-        prefix, mode, imu_name, imu_description, imu_location, ros_namespace
+    prefix, mode, imu_name, imu_description, imu_location, ros_namespace, standalone=False
 ):
 
     configuration = get_complete_configuration(imu_name, imu_description, imu_location)
@@ -116,6 +116,7 @@ def generate_urdf_description(
             'geometry_config_yaml_file': geometry_yaml_file,
             'mesh_visual': str(True),
             'ros_namespace': ros_namespace,
+            'standalone': str(standalone),
         },
     )
 

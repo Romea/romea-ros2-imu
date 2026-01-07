@@ -21,7 +21,7 @@
 
     <xacro:if value="${'gazebo' in  mode}">
       <gazebo reference="${link_name}">
-        <material>Gazebo/Orange</material>
+        <!-- <material>Gazebo/Orange</material> -->
 
         <sensor name="${name}" type="imu">
           <always_on>true</always_on>
@@ -74,6 +74,12 @@
             </linear_acceleration>
           </imu>
 
+          <xacro:if value="${'classic' not in mode}">
+            <plugin filename="gz-sim-imu-system"
+              name="gz::sim::systems::Imu">
+            </plugin>
+          </xacro:if>
+
           <xacro:if value="${'classic' in mode}">
             <plugin name="driver" filename="libgazebo_ros_imu_sensor.so">
               <ros>
@@ -82,11 +88,6 @@
               </ros>
               <frame_name>${link_name}</frame_name>
               <initial_orientation_as_reference>false</initial_orientation_as_reference>
-            </plugin>
-          </xacro:if>
-          <xacro:if value="${'classic' not in mode}">
-            <plugin filename="gz-sim-imu-system"
-              name="gz::sim::systems::Imu">
             </plugin>
           </xacro:if>
         </sensor>

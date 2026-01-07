@@ -3,7 +3,10 @@
   xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="imu_sensor"
-    params="prefix mode name configuration geometry mesh_visual ros_namespace">
+    params="prefix mode name configuration geometry mesh_visual ros_namespace standalone">
+
+    <!-- <xacro:property name="standalone"
+      value="${standalone}" /> -->
 
     <xacro:property name="link_name"
       value="${prefix}${name}_link" />
@@ -39,6 +42,10 @@
         value="${geometry['mesh']['filename']}" />
     </xacro:if>
 
+    <xacro:if value="${standalone == True}">
+      <link name="${parent_link_name}"/>
+    </xacro:if>
+
     <link name="${link_name}">
 
       <inertial>
@@ -58,6 +65,9 @@
             <mesh filename="${mesh_filename}"
               scale="${mesh_scale[0]} ${mesh_scale[1]} ${mesh_scale[2]}" />
           </geometry>
+          <material name="xsens_orange">
+            <color rgba="0.92 0.45 0.02 1.0"/>
+          </material>
         </xacro:if>
         <xacro:if value="${mesh_visual == False or 'mesh' not in geometry}">
           <origin xyz="${aabb_center[0]} ${aabb_center[1]} ${aabb_center[2]}" rpy="0 0 0" />
