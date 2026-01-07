@@ -8,6 +8,11 @@ launch:
           value: /dev/ttyUSB0
         - name: baudrate
           value: "115200"
+      if: $(eval "'$(var mode)' == 'live'")
+  - include:
+      file: $(find-pkg-share romea_imu_meta_bringup)/profile/gz_bridge.launch.py
+      if: $(eval "'$(var mode)' == 'simulation_gazebo'")
+
 configuration:
   manufacturer: xsens
   model: mti

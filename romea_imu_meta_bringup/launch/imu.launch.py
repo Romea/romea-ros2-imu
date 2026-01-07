@@ -47,7 +47,7 @@ def get_meta_description(context):
 def launch_setup(context, *args, **kwargs):
     mode = get_mode(context)
     meta_description = get_meta_description(context)
-    launch_filename = f"/tmp/{meta_description.get_filename_prefix()}driver.launch.yaml"
+    launch_filename = f"/tmp/{meta_description.get_filename_prefix()}drivers.launch.yaml"
     with open(launch_filename, "w") as f:
         f.write(generate_launch_file(meta_description))
 
