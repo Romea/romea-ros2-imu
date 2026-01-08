@@ -27,43 +27,9 @@ from romea_imu_meta_bringup.meta_description import generate_urdf_description
 
 def launch_setup(context, *args, **kwargs):
 
-    # mode = f'simulation_{LaunchConfiguration("simulator").perform(context)}'
-
-    # mode = "simulation"
-    # prefix = "robot_"
-    # name = "imu"
-
-    # description = {
-    #     "manufacturer": LaunchConfiguration("manufacturer").perform(context),
-    #     "model": LaunchConfiguration("model").perform(context),
-    #     "version": LaunchConfiguration("version").perform(context),
-    #     "rate": int(LaunchConfiguration("rate").perform(context)),
-    # }
-
-    # print(description)
-
-    # location = {
-    #     "parent_link": "base_link",
-    #     "xyz": [0.0, 0.0, 0.0],
-    #     "rpy": [0.0, 0.0, 1.0]
-    # }
-
-    # ros_namespace = "robot/imu"
-    # urdf_xml = ET.fromstring(
-    #     generate_urdf_description(prefix, mode, name, description, location, ros_namespace)
-    # )
-    # child = ET.SubElement(urdf_xml, "link")
-    # child.set("name", "robot_base_link")
-
-    # with open('/tmp/urdf', 'w') as file:
-    #     file.write(ET.tostring(urdf_xml, encoding='unicode'))
-
-    
-
     simulator_type = LaunchConfiguration("simulator").perform(context)
     robot_namespace = LaunchConfiguration("robot_namespace").perform(context)
     meta_description_file_path = LaunchConfiguration("meta_description_file_path").perform(context)
-
 
     simulation = LaunchDescription()
 

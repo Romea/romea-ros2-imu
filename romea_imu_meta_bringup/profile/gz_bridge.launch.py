@@ -41,7 +41,16 @@ def launch_setup(context, *args, **kwargs):
     common_arguments = {
         "package": "ros_gz_bridge",
         "name": "gz_bridge",
-        "arguments": [f"{ros_namespace}/data@sensor_msgs/msg/Imu@gz.msgs.IMU"],
+        "parameters" : [
+            {"bridge_names": ["imu_bridge"]},
+            {"bridges.imu_bridge.ros_topic_name": f"{ros_namespace}/data"},
+            {"bridges.imu_bridge.gz_topic_name": f"{ros_namespace}/data"},
+            {"bridges.imu_bridge.ros_type_name": "sensor_msgs/msg/Imu"},
+            {"bridges.imu_bridge.gz_type_name": "gz.msgs.IMU"},
+            {"bridges.imu_bridge.direction": "GZ_TO_ROS"},
+            {"bridges.imu_bridge.lazy": True},
+            {"bridges.imu_bridge.qos_profile": "SENSOR_DATA"},
+        ],
     }
 
     launch = LaunchDescription()
