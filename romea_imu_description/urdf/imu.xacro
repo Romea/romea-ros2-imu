@@ -5,9 +5,6 @@
   <xacro:macro name="imu_sensor"
     params="prefix mode name configuration geometry mesh_visual ros_namespace standalone">
 
-    <!-- <xacro:property name="standalone"
-      value="${standalone}" /> -->
-
     <xacro:property name="link_name"
       value="${prefix}${name}_link" />
     <xacro:property name="joint_name"
@@ -42,9 +39,7 @@
         value="${geometry['mesh']['filename']}" />
     </xacro:if>
 
-    <xacro:if value="${standalone == True}">
-      <link name="${parent_link_name}"/>
-    </xacro:if>
+
 
     <link name="${link_name}">
 
@@ -86,14 +81,16 @@
 
     </link>
 
-    <joint name="${joint_name}" type="fixed">
-      <axis xyz="0 0 1" />
-      <origin xyz="${xyz[0]} ${xyz[1]} ${xyz[2]}"
-        rpy="${rpy[0]/180.*pi} ${rpy[1]/180.*pi} ${rpy[2]/180.*pi}" />
-      <parent link="${parent_link_name}" />
-      <child link="${link_name}" />
-    </joint>
-
+    <xacro:if value="${standalone == False}">
+      <joint name="${joint_name}" type="fixed">
+        <axis xyz="0 0 1" />
+        <origin xyz="${xyz[0]} ${xyz[1]} ${xyz[2]}"
+          rpy="${rpy[0]/180.*pi} ${rpy[1]/180.*pi} ${rpy[2]/180.*pi}" />
+        <parent link="${parent_link_name}" />
+        <child link="${link_name}" />
+      </joint>
+    </xacro:if>
+ 
     <xacro:if value="${'simulation' in  mode}">
       <xacro:include filename="$(find romea_imu_description)/urdf/imu.simulation.xacro" />
       <xacro:imu_sensor_simulation
