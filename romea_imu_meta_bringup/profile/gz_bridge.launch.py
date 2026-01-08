@@ -21,7 +21,7 @@ from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
 
 
-class LaunchVariables():
+class LaunchVariables:
     def __init__(self, context):
         self.__context = context
 
@@ -41,7 +41,7 @@ def launch_setup(context, *args, **kwargs):
     common_arguments = {
         "package": "ros_gz_bridge",
         "name": "gz_bridge",
-        "parameters" : [
+        "parameters": [
             {"bridge_names": ["imu_bridge"]},
             {"bridges.imu_bridge.ros_topic_name": f"{ros_namespace}/data"},
             {"bridges.imu_bridge.gz_topic_name": f"{ros_namespace}/data"},
@@ -61,12 +61,14 @@ def launch_setup(context, *args, **kwargs):
             launch.add_action(Node(**common_arguments, executable=executable))
         else:
             plugin = "ros_gz_bridge::RosGzBridge"
-            extra_arguments=[{'use_intra_process_comms': True}],
+            extra_arguments = ([{"use_intra_process_comms": True}],)
             launch.add_action(
                 LoadComposableNodes(
                     target_container=container,
                     composable_node_descriptions=[
-                        ComposableNode(**common_arguments, plugin=plugin, extra_arguments=extra_arguments)
+                        ComposableNode(
+                            **common_arguments, plugin=plugin, extra_arguments=extra_arguments
+                        )
                     ],
                 )
             )
@@ -74,12 +76,11 @@ def launch_setup(context, *args, **kwargs):
     return [launch]
 
 
-
 def generate_launch_description():
 
     return LaunchDescription(
         [
             DeclareLaunchArgument("container", default_value=""),
-            OpaqueFunction(function=launch_setup)
+            OpaqueFunction(function=launch_setup),
         ]
     )

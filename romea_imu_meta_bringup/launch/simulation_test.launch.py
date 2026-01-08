@@ -12,17 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import xml.etree.ElementTree as ET
 
-from ament_index_python.packages import get_package_share_directory, get_packages_with_prefixes
+from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
-
-from romea_imu_meta_bringup.meta_description import generate_urdf_description
 
 
 def launch_setup(context, *args, **kwargs):
@@ -76,7 +72,6 @@ def launch_setup(context, *args, **kwargs):
 
 
 def generate_launch_description():
-
 
     declared_arguments = [
         DeclareLaunchArgument("simulator", default_value="gazebo"),

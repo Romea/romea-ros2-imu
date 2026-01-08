@@ -49,7 +49,7 @@ def launch_setup(context, *args, **kwargs):
 
     ros_namespace = "robot/imu"
     standalone = True
-    
+
     with open("/tmp/urdf", "w") as file:
         file.write(
             generate_urdf_description(
@@ -90,12 +90,16 @@ def launch_setup(context, *args, **kwargs):
 
         simulation.add_action(gazebo_gui)
 
+        world_sdf_file = (
+            get_package_share_directory("romea_simulation_gazebo_worlds") + "worlds/gz_empty.sdf"
+        )
+
         gazebo_server = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 get_package_share_directory("ros_gz_sim") + "/launch/gz_server.launch.py"
             ),
             launch_arguments={
-                "world_sdf_file": "/home/jean.laneurit/dev/romea_ros2_jazzy/src/tools/romea_simulation/romea_simulation_gazebo_worlds/worlds/gz_wgs84_empty.sdf",
+                "world_sdf_file": world_sdf_file,
                 "world_sdf_string": "world",
             }.items(),
         )
