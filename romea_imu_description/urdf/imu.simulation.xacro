@@ -21,7 +21,7 @@
 
     <xacro:if value="${'gazebo' in  mode}">
       <gazebo reference="${link_name}">
-        <!-- <material>Gazebo/Orange</material> -->
+        <material>Gazebo/Orange</material>
 
         <sensor name="${prefix}${name}" type="imu">
           <always_on>true</always_on>
