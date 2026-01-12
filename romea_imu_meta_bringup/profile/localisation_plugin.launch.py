@@ -16,7 +16,7 @@
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.substitutions import LaunchConfiguration, TextSubstitution, PythonExpression
+from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
 
@@ -39,7 +39,6 @@ def launch_setup(context, *args, **kwargs):
     odom_topic = var.get("odom_topic")
     robot_namespace = var.get("robot_namespace")
     # print(context.launch_configurations)
-
 
     imu_configuration = {
         "rate": float(var.get("rate")),
@@ -102,7 +101,6 @@ def generate_launch_description():
         LaunchConfiguration("robot_namespace"),
         TextSubstitution(text='/base/controller/odom')
     ]
-    
 
     return LaunchDescription(
         [
