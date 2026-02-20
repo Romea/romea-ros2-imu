@@ -61,8 +61,8 @@ def launch_setup(context, *args, **kwargs):
         "name": "localisation_plugin",
         "parameters": [
             {
-                "restamping": bool(restamping),
-                "enable_accelerations": "live" in mode,
+                "restamping": restamping == "true",
+                "enable_accelerations": "simulation" not in mode,
                 "imu": imu_configuration,
                 "use_sim_time": "live" not in mode
             }
