@@ -2,15 +2,15 @@
 
 ## 1) Overview
 
-romea_imu_meta_bringup provides tools to describe and launch imu sensor using a meta-description approach.
+romea_imu_meta_bringup provides tools to describe and launch IMU sensor using a meta-description approach.
 
-It allows defining imu in a high-level YAML format and automatically generating consistent ROS2 artifacts such as:
+It allows defining IMU in a high-level YAML format and automatically generating consistent ROS2 artifacts such as:
 
 * configuration files → used as generic ROS2 configuration inputs
-* launch files → used to start imu drivers and/or bridge for simulation
+* launch files → used to start IMU drivers and/or bridge for simulation
 * URDF description files → used to load the imu into simulators
 
-This package is built on top of `romea_common_meta_bringup` and specializes it for imu sensor integration. 
+This package is built on top of `romea_common_meta_bringup` and specializes it for IMU sensor integration. 
 
 It also provides launch files that allow controlling the IMU both on a real robot and in simulation.
 
@@ -20,7 +20,7 @@ It also provides launch files that allow controlling the IMU both on a real robo
 
 An `imu meta-description` is a YAML file that defines an IMU sensor and how it should be integrated into a system. It centralizes:
 
-* imu identification (name, namespace)
+* IMU identification (name, namespace)
 * hardware configuration (manufacturer, model, version)
 * kinematic attachment (parent link, pose)
 * ROS2 launch description
@@ -74,7 +74,7 @@ Each profile is intended to be included from the launch section of an IMU meta-d
 
 ## 3) Scripts
 
-`romea_imu_meta_bringup` provides several scripts to generate ROS2 artifacts (configuration, launch and URDF files) from an imu meta-description; the usage and resulting outputs are described below.
+`romea_imu_meta_bringup` provides several scripts to generate ROS2 artifacts (configuration, launch and URDF files) from an IMU meta-description; the usage and resulting outputs are described below.
 
 ### Generate configuration file
 
@@ -240,7 +240,7 @@ ros2 launch romea_imu_meta_bringup imu.launch.py \
 The `mode` parameter controls the behavior:
 
 * `live` → starts the imu driver and controllers
-* `simulation_<simulator>` → starts controllers and simulation bridges
+* `simulation_<simulator>` → starts simulation bridge
 
 ---
 

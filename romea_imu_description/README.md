@@ -35,15 +35,15 @@ imu_description:
 
 imu_location:
   parent_link: base_link
-  xyz: [1.0, 2.0, 3.0] #m
-  rpy: [4.0, 5.0, 6.0] #°
+  xyz: [-0.5, 0.0, 1.0] #m
+  rpy: [0.0, 0.0, 0.0] #°
 ```
 
 ---
 
 ### Notes
 
-IMU specifications are defined in files located in the `config/` directory and follow the pattern `<manufacturer>_<model>.<version>_specifications.yaml` (e.g. `xsens_mti_xxx_specifications.yaml`). These specification files provide default values such as update rate, noise ans biaises charadteristics, measurement ranges, which can be overridden by user-defined values in `imu_description`. 
+IMU specifications are defined in files located in the `config/` directory and follow the pattern `<manufacturer>_<model>_<version>_specifications.yaml` (e.g. `xsens_mti_xxx_specifications.yaml`). These specification files provide default values such as update rate, noise ans biaises charadteristics, measurement ranges, which can be overridden by user-defined values in `imu_description`. 
 
 The `xyz` and `rpy` fields define the pose of the IMU relative to the parent link. The `xyz` values specify the translation (in meters), while `rpy` defines the orientation using roll, pitch, and yaw angles expressed in degrees for readability and ease of definition by users. These angles are automatically converted to radians internally by the scripts to comply with ROS and URDF conventions. Together, they describe how the IMU is positioned and oriented within the robot frame.
 
@@ -89,16 +89,16 @@ from romea_imu_description import (
 imu_name = "imu"
 
 imu_description = {
-  manufacturer: xsens
-  model: mti
-  version: "640"
+  manufacturer: xsens,
+  model: mti,
+  version: "640",
   rate: 100
 }
 
 imu_location = {
     "parent_link": "base_link",
-    "xyz": [1.0, 2.0, 3.0],
-    "rpy": [4.0, 5.0, 6.0],
+    "xyz": [-0.5, 0.0, 1.0],
+    "rpy": [0.0, 0.0, 0.0]
 }
 
 prefix = "robot_"
@@ -145,3 +145,5 @@ Currently, the package supports the following IMU manufacturers and models:
 | gladiator | landmark | 40_ahrs |
 
 Support for additional IMU models may be added in future releases.
+
+! ajouter une section qui décrit comment on ajoute un nouveau IMU
