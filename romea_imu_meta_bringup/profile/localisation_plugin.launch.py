@@ -19,6 +19,7 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
+from math import pi
 
 
 class LaunchVariables():
@@ -45,13 +46,13 @@ def launch_setup(context, *args, **kwargs):
         "acceleration_noise_density": float(var.get("acceleration_noise_density")),
         "acceleration_bias_stability_std": float(var.get("acceleration_bias_stability_std")),
         "acceleration_range": float(var.get("acceleration_range")),
-        "angular_speed_noise_density": float(var.get("angular_speed_noise_density")),
-        "angular_speed_bias_stability_std": float(var.get("angular_speed_bias_stability_std")),
+        "angular_speed_noise_density": float(var.get("angular_speed_noise_density"))*pi/180.,
+        "angular_speed_bias_stability_std": float(var.get("angular_speed_bias_stability_std"))*pi/180./3600.,
         "angular_speed_range": float(var.get("angular_speed_range")),
         "magnetic_noise_density": float(var.get("magnetic_noise_density")),
         "magnetic_bias_stability_std": float(var.get("magnetic_bias_stability_std")),
         "magnetic_range": float(var.get("magnetic_range")),
-        "heading_std": float(var.get("heading_std")),
+        "heading_std": float(var.get("heading_std"))*pi/180.,
         "xyz": [float(v) for v in var.get("xyz")[1:-1].split(",")],
         "rpy": [float(v) for v in var.get("rpy")[1:-1].split(",")],
     }
