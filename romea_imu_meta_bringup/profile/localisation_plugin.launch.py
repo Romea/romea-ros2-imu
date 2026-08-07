@@ -12,17 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# from launch_ros.actions import SetRemap
+from math import pi
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
-from math import pi
 
 
-class LaunchVariables():
+class LaunchVariables:
     def __init__(self, context):
         self.__context = context
 
@@ -46,13 +45,16 @@ def launch_setup(context, *args, **kwargs):
         "acceleration_noise_density": float(var.get("acceleration_noise_density")),
         "acceleration_bias_stability_std": float(var.get("acceleration_bias_stability_std")),
         "acceleration_range": float(var.get("acceleration_range")),
-        "angular_speed_noise_density": float(var.get("angular_speed_noise_density"))*pi/180.,
-        "angular_speed_bias_stability_std": float(var.get("angular_speed_bias_stability_std"))*pi/180./3600.,
+        "angular_speed_noise_density": float(var.get("angular_speed_noise_density")) * pi / 180.0,
+        "angular_speed_bias_stability_std": float(var.get("angular_speed_bias_stability_std"))
+        * pi
+        / 180.0
+        / 3600.0,
         "angular_speed_range": float(var.get("angular_speed_range")),
         "magnetic_noise_density": float(var.get("magnetic_noise_density")),
         "magnetic_bias_stability_std": float(var.get("magnetic_bias_stability_std")),
         "magnetic_range": float(var.get("magnetic_range")),
-        "heading_std": float(var.get("heading_std"))*pi/180.,
+        "heading_std": float(var.get("heading_std")) * pi / 180.0,
         "xyz": [float(v) for v in var.get("xyz")[1:-1].split(",")],
         "rpy": [float(v) for v in var.get("rpy")[1:-1].split(",")],
     }
@@ -74,8 +76,7 @@ def launch_setup(context, *args, **kwargs):
             ("vehicle_controller/odom", odom_topic),
             ("attitude", f"/{robot_namespace}/localisation/attitude"),
             ("angular_speed", f"/{robot_namespace}/localisation/angular_speed"),
-
-        ]
+        ],
     }
 
     launch = LaunchDescription()
@@ -87,9 +88,7 @@ def launch_setup(context, *args, **kwargs):
         launch.add_action(
             LoadComposableNodes(
                 target_container=container,
-                composable_node_descriptions=[
-                    ComposableNode(**common_arguments, plugin=plugin)
-                ],
+                composable_node_descriptions=[ComposableNode(**common_arguments, plugin=plugin)],
             )
         )
 
@@ -99,9 +98,9 @@ def launch_setup(context, *args, **kwargs):
 def generate_launch_description():
 
     default_odom_topic = [
-        TextSubstitution(text='/'),
+        TextSubstitution(text="/"),
         LaunchConfiguration("robot_namespace"),
-        TextSubstitution(text='/base/controller/odom')
+        TextSubstitution(text="/base/controller/odom"),
     ]
 
     return LaunchDescription(
@@ -109,6 +108,6 @@ def generate_launch_description():
             DeclareLaunchArgument("odom_topic", default_value=default_odom_topic),
             DeclareLaunchArgument("restamping", default_value="false"),
             DeclareLaunchArgument("container", default_value=""),
-            OpaqueFunction(function=launch_setup)
+            OpaqueFunction(function=launch_setup),
         ]
     )
