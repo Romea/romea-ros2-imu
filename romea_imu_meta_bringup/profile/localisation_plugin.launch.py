@@ -65,7 +65,8 @@ def launch_setup(context, *args, **kwargs):
                 "restamping": restamping == "true",
                 "enable_accelerations": "simulation" not in mode,
                 "imu": imu_configuration,
-                "use_sim_time": "live" not in mode
+                "use_sim_time": "live" not in mode,
+                "debug": True,
             }
         ],
         "remappings": [
