@@ -19,6 +19,7 @@ import romea_imu_description
 
 
 class IMUMetaDescription(SensorMetaDescription):
+
     def __init__(self, meta_description_file_path, robot_name=None):
         super().__init__("imu", meta_description_file_path, robot_name)
 
