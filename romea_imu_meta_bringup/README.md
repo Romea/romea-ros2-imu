@@ -264,13 +264,6 @@ This launch file:
 
 Pass `gui:=false` to run without the simulator GUI.
 
-In standalone mode, `location.parent_link: world` fixes the sensor to the
-simulation world at the configured mounting pose. The xacro declares the
-unprefixed `world` link and its fixed joint. With any other parent, the
-standalone sensor has no mounting joint and remains free under gravity.
-When integrated into a robot (`standalone: false`), the parent link must
-be supplied by the robot model.
-
 ---
 ## 5) Supported imus
 
