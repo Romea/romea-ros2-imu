@@ -17,6 +17,7 @@ import math
 import os
 import time
 import unittest
+import xml.etree.ElementTree as ET
 
 from ament_index_python.packages import get_package_share_directory, PackageNotFoundError
 from launch import LaunchDescription
@@ -25,6 +26,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 import launch_testing.actions
 import rclpy
 from rclpy.qos import qos_profile_sensor_data
+import romea_imu_meta_bringup.meta_description as meta_description
 from sensor_msgs.msg import Imu
 
 
@@ -38,7 +40,7 @@ def generate_test_description():
     simulation = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             get_package_share_directory("romea_imu_meta_bringup")
-            + "/launch/simulation.launch.py"
+            + "/launch/simulation_test.launch.py"
         ),
         launch_arguments={
             "gui": "false",
@@ -78,6 +80,22 @@ class TestIMUGazeboSimulation(unittest.TestCase):
             if predicate():
                 return
         self.fail("Timed out: " + description)
+
+    def test_imu_world_attachment(self):
+        path = os.path.join(os.path.dirname(__file__), "test_simulation.yaml")
+        description = meta_description.IMUMetaDescription(path, "robot")
+        urdf = ET.fromstring(meta_description.generate_xml_urdf_description_str(
+            "simulation_gazebo", description, standalone=True
+        ))
+        self.assertIsNotNone(urdf.find("link[@name='world']"))
+        joint = urdf.find("joint[@name='robot_imu_joint']")
+        self.assertIsNotNone(joint)
+        self.assertEqual(joint.find("parent").get("link"), "world")
+        self.assertEqual(joint.find("child").get("link"), "robot_imu_link")
+        origin = joint.find("origin")
+        self.assertEqual(list(map(float, origin.get("xyz").split())), [1.0, 2.0, 3.0])
+        for actual, degrees in zip(map(float, origin.get("rpy").split()), [4.0, 5.0, 6.0]):
+            self.assertAlmostEqual(actual, math.radians(degrees))
 
     def test_imu_publishes_data(self):
         self.wait_until(lambda: len(self.messages) >= 5, 60, "no IMU data received")

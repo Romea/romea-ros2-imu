@@ -9,7 +9,7 @@ configuration:
   model: mti
   rate: 100
 location:
-  parent_link: "base_link"
+  parent_link: world  # Fixed to the simulation world in standalone mode
   xyz: [1.0, 2.0, 3.0]
   rpy: [4.0, 5.0, 6.0]
 records:

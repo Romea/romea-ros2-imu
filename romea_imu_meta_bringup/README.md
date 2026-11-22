@@ -214,7 +214,7 @@ This file can be used directly with ROS2 or generated dynamically using `imu.lau
 The package provides **two main launch files**:
 
 * `imu.launch.py` → for dynamic bringup (live or simulation mode)
-* `simulation.launch.py` → for full simulation test
+* `simulation_test.launch.py` → for full simulation test
 
 ---
 
@@ -249,7 +249,7 @@ The `mode` parameter controls the behavior:
 For a complete simulation setup, use:
 
 ```bash
-ros2 launch romea_imu_meta_bringup simulation.launch.py \
+ros2 launch romea_imu_meta_bringup simulation_test.launch.py \
   simulator_type:=gazebo \
   robot_namespace:=robot \
   meta_description_file_path:=path/to/imu_meta_description.yaml
@@ -263,6 +263,13 @@ This launch file:
 * calls `imu.launch.py` to start the gazebo bridge
 
 Pass `gui:=false` to run without the simulator GUI.
+
+In standalone mode, `location.parent_link: world` fixes the sensor to the
+simulation world at the configured mounting pose. The xacro declares the
+unprefixed `world` link and its fixed joint. With any other parent, the
+standalone sensor has no mounting joint and remains free under gravity.
+When integrated into a robot (`standalone: false`), the parent link must
+be supplied by the robot model.
 
 ---
 ## 5) Supported imus
