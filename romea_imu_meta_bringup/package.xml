@@ -20,6 +20,8 @@
   <test_depend>ament_cmake_pytest</test_depend>
 
   <exec_depend>xacro</exec_depend>
+  <exec_depend>xsens_driver</exec_depend>
+  <exec_depend>bluespace_ai_xsens_mti_driver</exec_depend>
 
   <exec_depend>romea_simulation_meta_bringup</exec_depend>
   <exec_depend>launch</exec_depend>

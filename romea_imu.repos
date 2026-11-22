@@ -15,3 +15,12 @@ repositories:
   romea_ros2/interfaces/sensors/romea_imu:
     type: git
     url: git@forge.inrae.fr:romea_ros2/interfaces/sensors/romea_imu.git
+
+  third_party/xsens_driver:
+    type: git
+    url: git@forge.inrae.fr:romea_ros2/third_party/xsens_driver.git
+    version: romea
+  third_party/bluespace_ai_xsens_ros_mti_driver:
+    type: git
+    url: git@forge.inrae.fr:romea_ros2/third_party/bluespace_ai_xsens_ros_mti_driver.git
+    version: romea

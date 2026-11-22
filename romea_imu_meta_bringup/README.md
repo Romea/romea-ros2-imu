@@ -214,7 +214,7 @@ This file can be used directly with ROS2 or generated dynamically using `imu.lau
 The package provides **two main launch files**:
 
 * `imu.launch.py` → for dynamic bringup (live or simulation mode)
-* `simulation_test.launch.py` → for full simulation test
+* `simulation.launch.py` → for full simulation test
 
 ---
 
@@ -249,7 +249,7 @@ The `mode` parameter controls the behavior:
 For a complete simulation setup, use:
 
 ```bash
-ros2 launch romea_imu_meta_bringup simulation_test.launch.py \
+ros2 launch romea_imu_meta_bringup simulation.launch.py \
   simulator_type:=gazebo \
   robot_namespace:=robot \
   meta_description_file_path:=path/to/imu_meta_description.yaml
@@ -261,6 +261,8 @@ This launch file:
 * generates and loads the URDF
 * spawns the imu in simulation
 * calls `imu.launch.py` to start the gazebo bridge
+
+Pass `gui:=false` to run without the simulator GUI.
 
 ---
 ## 5) Supported imus
@@ -281,7 +283,7 @@ Details and specifications for each model can be found in the config directory o
 The package currently supports the following ROS2 IMU drivers:
 
 * bluespace_ai_xsens_mti_driver
-* bluespace_ai_xsens_mti_driver
+* xsens_driver
 
 Dedicated launch profiles are provided in the profile/ directory to start each supported driver through a standardized interface.
 
@@ -300,7 +302,7 @@ launch:
           value: "115200"
 ```
 
-#### Example using ethzasl_xsens_driver
+#### Example using xsens_driver
 
 ```yaml
 launch:

@@ -20,3 +20,12 @@ repositories:
     type: git
     url: https://github.com/Romea/romea-ros2-imu.git
     version: main
+
+  third_party/xsens_driver:
+    type: git
+    url: https://github.com/Romea-Third-Party/xsens_driver.git
+    version: romea
+  third_party/bluespace_ai_xsens_ros_mti_driver:
+    type: git
+    url: https://github.com/Romea-Third-Party/bluespace_ai_xsens_ros_mti_driver.git
+    version: romea
